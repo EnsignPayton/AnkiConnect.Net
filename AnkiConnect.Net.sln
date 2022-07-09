@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6272F810-8CEA-45A5-9BAD-81C4EEE03DCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnkiConnect.Net", "src\AnkiConnect.Net\AnkiConnect.Net.csproj", "{A7286691-9485-4B1B-8327-69304733A6FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED4B314B-918A-4581-ADCF-7A2FF2CF6C56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnkiConnect.Net.Tests", "tests\AnkiConnect.Net.Tests\AnkiConnect.Net.Tests.csproj", "{89C882DB-57A1-4B46-BEF2-121115BFECB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnkiConnect.Net.Console", "src\AnkiConnect.Net.Console\AnkiConnect.Net.Console.csproj", "{8B972118-D7DA-43D0-AC37-E667420DCF3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7286691-9485-4B1B-8327-69304733A6FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7286691-9485-4B1B-8327-69304733A6FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7286691-9485-4B1B-8327-69304733A6FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7286691-9485-4B1B-8327-69304733A6FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C882DB-57A1-4B46-BEF2-121115BFECB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C882DB-57A1-4B46-BEF2-121115BFECB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C882DB-57A1-4B46-BEF2-121115BFECB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C882DB-57A1-4B46-BEF2-121115BFECB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B972118-D7DA-43D0-AC37-E667420DCF3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B972118-D7DA-43D0-AC37-E667420DCF3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B972118-D7DA-43D0-AC37-E667420DCF3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B972118-D7DA-43D0-AC37-E667420DCF3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A7286691-9485-4B1B-8327-69304733A6FE} = {6272F810-8CEA-45A5-9BAD-81C4EEE03DCA}
+		{89C882DB-57A1-4B46-BEF2-121115BFECB0} = {ED4B314B-918A-4581-ADCF-7A2FF2CF6C56}
+		{8B972118-D7DA-43D0-AC37-E667420DCF3B} = {6272F810-8CEA-45A5-9BAD-81C4EEE03DCA}
+	EndGlobalSection
+EndGlobal
