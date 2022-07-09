@@ -20,4 +20,7 @@ internal static class AnkiMethods
     public const string ModelNamesAndIds = "modelNamesAndIds";
     public const string GetTags = "getTags";
     public const string ClearUnusedTags = "clearUnusedTags";
+    public const string RemoveEmptyNotes = "removeEmptyNotes";
+    public const string GetNumCardsReviewedToday = "getNumCardsReviewedToday";
+    public const string GetNumCardsReviewedByDay = "getNumCardsReviewedByDay";
 }

@@ -71,4 +71,13 @@ public class AnkiClient : IAnkiClient
 
     public Task ClearUnusedTagsAsync() =>
         InvokeAsync(AnkiMethods.ClearUnusedTags);
+
+    public Task RemoveEmptyNotesAsync() =>
+        InvokeAsync(AnkiMethods.RemoveEmptyNotes);
+
+    public Task<int?> GetNumCardsReviewedTodayAsync() =>
+        InvokeAsync<int?>(AnkiMethods.GetNumCardsReviewedToday);
+
+    public Task<IList<object?>?> GetNumCardsReviewedByDayAsync() =>
+        InvokeAsync<IList<object?>>(AnkiMethods.GetNumCardsReviewedByDay);
 }

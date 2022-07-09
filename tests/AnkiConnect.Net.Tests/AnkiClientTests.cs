@@ -895,6 +895,96 @@ public class AnkiClientTests
         await Assert.ThrowsAsync<AnkiException>(() => client.ClearUnusedTagsAsync());
     }
 
+    [Fact]
+    public async Task RemoveEmptyNotesAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.RemoveEmptyNotesAsync();
+
+        mockHandler.WasSent("{\"action\":\"removeEmptyNotes\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task RemoveEmptyNotesAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":null,\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        // Does not throw
+        await client.RemoveEmptyNotesAsync();
+    }
+
+    [Fact]
+    public async Task RemoveEmptyNotesAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.RemoveEmptyNotesAsync());
+    }
+
+    [Fact]
+    public async Task RemoveEmptyNotesAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.RemoveEmptyNotesAsync());
+    }
+
+    [Fact]
+    public async Task GetNumCardsReviewedTodayAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.GetNumCardsReviewedTodayAsync();
+
+        mockHandler.WasSent("{\"action\":\"getNumCardsReviewedToday\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task GetNumCardsReviewedTodayAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":6,\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.GetNumCardsReviewedTodayAsync();
+
+        Assert.NotNull(result);
+        Assert.Equal(6, result);
+    }
+
+    [Fact]
+    public async Task GetNumCardsReviewedTodayAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetNumCardsReviewedTodayAsync());
+    }
+
+    [Fact]
+    public async Task GetNumCardsReviewedTodayAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetNumCardsReviewedTodayAsync());
+    }
+
+    // TODO: GetNumCardsReviewedByDay Tests
+
     private static IAnkiClient GetClient(IMock<HttpMessageHandler> mockHandler)
     {
         var client = new HttpClient(mockHandler.Object);
