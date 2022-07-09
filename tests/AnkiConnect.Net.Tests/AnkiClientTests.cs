@@ -744,6 +744,157 @@ public class AnkiClientTests
         await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAsync());
     }
 
+    [Fact]
+    public async Task ModelNamesAndIdsAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.ModelNamesAndIdsAsync();
+
+        mockHandler.WasSent("{\"action\":\"modelNamesAndIds\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task ModelNamesAndIdsAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(@"{
+    ""result"": {
+        ""Basic"": 1483883011648,
+        ""Basic (and reversed card)"": 1483883011644,
+        ""Basic (optional reversed card)"": 1483883011631,
+        ""Cloze"": 1483883011630
+    },
+    ""error"": null
+}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.ModelNamesAndIdsAsync();
+
+        Assert.NotNull(result);
+        Assert.Equal(4, result!.Count);
+        Assert.Contains("Basic", result);
+        Assert.Equal(1483883011648ul, result["Basic"]);
+        Assert.Contains("Basic (and reversed card)", result);
+        Assert.Equal(1483883011644ul, result["Basic (and reversed card)"]);
+        Assert.Contains("Basic (optional reversed card)", result);
+        Assert.Equal(1483883011631ul, result["Basic (optional reversed card)"]);
+        Assert.Contains("Cloze", result);
+        Assert.Equal(1483883011630ul, result["Cloze"]);
+    }
+
+    [Fact]
+    public async Task ModelNamesAndIdsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAndIdsAsync());
+    }
+
+    [Fact]
+    public async Task ModelNamesAndIdsAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAndIdsAsync());
+    }
+
+    [Fact]
+    public async Task GetTagsAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.GetTagsAsync();
+
+        mockHandler.WasSent("{\"action\":\"getTags\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task GetTagsAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":[\"european-languages\", \"idioms\"],\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.GetTagsAsync();
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal("european-languages", result[0]);
+        Assert.Equal("idioms", result[1]);
+    }
+
+    [Fact]
+    public async Task GetTagsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetTagsAsync());
+    }
+
+    [Fact]
+    public async Task GetTagsAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetTagsAsync());
+    }
+
+    [Fact]
+    public async Task ClearUnusedTagsAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.ClearUnusedTagsAsync();
+
+        mockHandler.WasSent("{\"action\":\"clearUnusedTags\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task ClearUnusedTagsAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":null,\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        // Does not throw
+        await client.ClearUnusedTagsAsync();
+    }
+
+    [Fact]
+    public async Task ClearUnusedTagsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.ClearUnusedTagsAsync());
+    }
+
+    [Fact]
+    public async Task ClearUnusedTagsAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.ClearUnusedTagsAsync());
+    }
+
     private static IAnkiClient GetClient(IMock<HttpMessageHandler> mockHandler)
     {
         var client = new HttpClient(mockHandler.Object);

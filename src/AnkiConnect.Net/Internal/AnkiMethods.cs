@@ -1,4 +1,4 @@
-﻿namespace AnkiConnect.Net;
+﻿namespace AnkiConnect.Net.Internal;
 
 internal static class AnkiMethods
 {
@@ -17,4 +17,7 @@ internal static class AnkiMethods
     public const string GetProfiles = "getProfiles";
     public const string ReloadCollection = "reloadCollection";
     public const string ModelNames = "modelNames";
+    public const string ModelNamesAndIds = "modelNamesAndIds";
+    public const string GetTags = "getTags";
+    public const string ClearUnusedTags = "clearUnusedTags";
 }

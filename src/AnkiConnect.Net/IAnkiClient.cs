@@ -19,4 +19,7 @@ public interface IAnkiClient
     Task<IList<string>?> GetProfilesAsync();
     Task ReloadCollectionAsync();
     Task<IList<string>?> ModelNamesAsync();
+    Task<IDictionary<string, ulong>?> ModelNamesAndIdsAsync();
+    Task<IList<string>?> GetTagsAsync();
+    Task ClearUnusedTagsAsync();
 }

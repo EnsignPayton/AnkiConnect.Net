@@ -1,153 +1,74 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using AnkiConnect.Net.Internal;
 using AnkiConnect.Net.Models;
 
 namespace AnkiConnect.Net;
 
 public class AnkiClient : IAnkiClient
 {
-    private const string DefaultUrl = "http://localhost:8765";
+    private readonly InternalAnkiClient _client;
 
-    private readonly HttpClient _client;
-
-    public AnkiClient(HttpClient client)
+    public AnkiClient(HttpClient httpClient)
     {
-        _client = client;
+        _client = new InternalAnkiClient(httpClient);
     }
 
-    private async Task<TResult?> InvokeAsync<TResult>(string action)
-    {
-        try
-        {
-            var request = new AnkiRequest
-            {
-                Action = action
-            };
+    private Task<TResult?> InvokeAsync<TResult>(string action) =>
+        _client.InvokeAsync<TResult>(action);
 
-            var requestJson = JsonSerializer.Serialize(request);
-            var requestContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
-            var message = await _client.PostAsync(DefaultUrl, requestContent);
-            message.EnsureSuccessStatusCode();
-            var responseJson = await message.Content.ReadAsStringAsync();
-            var response = JsonSerializer.Deserialize<AnkiResponse<TResult>>(responseJson);
-            if (response is null)
-                throw new AnkiException("Response was null");
-            if (!string.IsNullOrEmpty(response.Error))
-                throw new AnkiException(response.Error);
-            return response.Result;
-        }
-        catch (AnkiException)
-        {
-            throw;
-        }
-        catch (Exception ex)
-        {
-            throw new AnkiException(ex);
-        }
-    }
+    private Task InvokeAsync(string action) =>
+        _client.InvokeAsync(action);
 
-    private async Task InvokeAsync(string action)
-    {
-        try
-        {
-            var request = new AnkiRequest
-            {
-                Action = action
-            };
+    public Task<IList<string>?> DeckNamesAsync() =>
+        InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
 
-            var requestJson = JsonSerializer.Serialize(request);
-            var requestContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
-            var message = await _client.PostAsync(DefaultUrl, requestContent);
-            message.EnsureSuccessStatusCode();
-            var responseJson = await message.Content.ReadAsStringAsync();
-            var response = JsonSerializer.Deserialize<AnkiResponse>(responseJson);
-            if (response is null)
-                throw new AnkiException("Response was null");
-            if (!string.IsNullOrEmpty(response.Error))
-                throw new AnkiException(response.Error);
-        }
-        catch (AnkiException)
-        {
-            throw;
-        }
-        catch (Exception ex)
-        {
-            throw new AnkiException(ex);
-        }
-    }
+    public Task<IDictionary<string, int>?> DeckNamesAndIdsAsync() =>
+        InvokeAsync<IDictionary<string, int>>(AnkiMethods.DeckNamesAndIds);
 
-    public async Task<IList<string>?> DeckNamesAsync()
-    {
-        return await InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
-    }
+    public Task<GuiCurrentCardResult?> GuiCurrentCardAsync() =>
+        InvokeAsync<GuiCurrentCardResult>(AnkiMethods.GuiCurrentCard);
 
-    public async Task<IDictionary<string, int>?> DeckNamesAndIdsAsync()
-    {
-        return await InvokeAsync<IDictionary<string, int>>(AnkiMethods.DeckNamesAndIds);
-    }
+    public Task<bool?> GuiStartCardTimerAsync() =>
+        InvokeAsync<bool?>(AnkiMethods.GuiStartCardTimer);
 
-    public async Task<GuiCurrentCardResult?> GuiCurrentCardAsync()
-    {
-        return await InvokeAsync<GuiCurrentCardResult>(AnkiMethods.GuiCurrentCard);
-    }
+    public Task<bool?> GuiShowQuestionAsync() =>
+        InvokeAsync<bool?>(AnkiMethods.GuiShowQuestion);
 
-    public async Task<bool?> GuiStartCardTimerAsync()
-    {
-        return await InvokeAsync<bool>(AnkiMethods.GuiStartCardTimer);
-    }
+    public Task<bool?> GuiShowAnswerAsync() =>
+        InvokeAsync<bool?>(AnkiMethods.GuiShowAnswer);
 
-    public async Task<bool?> GuiShowQuestionAsync()
-    {
-        return await InvokeAsync<bool>(AnkiMethods.GuiShowQuestion);
-    }
+    public Task GuiDeckBrowserAsync() =>
+        InvokeAsync(AnkiMethods.GuiDeckBrowser);
 
-    public async Task<bool?> GuiShowAnswerAsync()
-    {
-        return await InvokeAsync<bool>(AnkiMethods.GuiShowAnswer);
-    }
+    public Task GuiExitAnkiAsync() =>
+        InvokeAsync(AnkiMethods.GuiExitAnki);
 
-    public async Task GuiDeckBrowserAsync()
-    {
-        await InvokeAsync(AnkiMethods.GuiDeckBrowser);
-    }
+    public Task GuiCheckDatabaseAsync() =>
+        InvokeAsync(AnkiMethods.GuiCheckDatabase);
 
-    public async Task GuiExitAnkiAsync()
-    {
-        await InvokeAsync(AnkiMethods.GuiExitAnki);
-    }
+    public Task<RequestPermissionResult?> RequestPermissionAsync() =>
+        InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);
 
-    public async Task GuiCheckDatabaseAsync()
-    {
-        await InvokeAsync(AnkiMethods.GuiCheckDatabase);
-    }
+    public Task<int?> VersionAsync() =>
+        InvokeAsync<int?>(AnkiMethods.Version);
 
-    public async Task<RequestPermissionResult?> RequestPermissionAsync()
-    {
-        return await InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);
-    }
+    public Task SyncAsync() =>
+        InvokeAsync(AnkiMethods.Sync);
 
-    public async Task<int?> VersionAsync()
-    {
-        return await InvokeAsync<int>(AnkiMethods.Version);
-    }
+    public Task<IList<string>?> GetProfilesAsync() =>
+        InvokeAsync<IList<string>>(AnkiMethods.GetProfiles);
 
-    public async Task SyncAsync()
-    {
-        await InvokeAsync(AnkiMethods.Sync);
-    }
+    public Task ReloadCollectionAsync() =>
+        InvokeAsync(AnkiMethods.ReloadCollection);
 
-    public async Task<IList<string>?> GetProfilesAsync()
-    {
-        return await InvokeAsync<IList<string>>(AnkiMethods.GetProfiles);
-    }
+    public Task<IList<string>?> ModelNamesAsync() =>
+        InvokeAsync<IList<string>>(AnkiMethods.ModelNames);
 
-    public async Task ReloadCollectionAsync()
-    {
-        await InvokeAsync(AnkiMethods.ReloadCollection);
-    }
+    public Task<IDictionary<string, ulong>?> ModelNamesAndIdsAsync() =>
+        InvokeAsync<IDictionary<string, ulong>>(AnkiMethods.ModelNamesAndIds);
 
-    public async Task<IList<string>?> ModelNamesAsync()
-    {
-        return await InvokeAsync<IList<string>>(AnkiMethods.ModelNames);
-    }
+    public Task<IList<string>?> GetTagsAsync() =>
+        InvokeAsync<IList<string>>(AnkiMethods.GetTags);
+
+    public Task ClearUnusedTagsAsync() =>
+        InvokeAsync(AnkiMethods.ClearUnusedTags);
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AnkiConnect.Net.Models;
+namespace AnkiConnect.Net.Internal;
 
 internal class AnkiRequest
 {
