@@ -18,6 +18,21 @@ public class AnkiClient : IAnkiClient
     public Task<IList<bool>?> SetEaseFactorsAsync(SetEaseFactorsParams value) =>
         _client.InvokeAsync<SetEaseFactorsParams, IList<bool>>(AnkiMethods.SetEaseFactors, value);
 
+    public Task<IList<bool>?> SetSpecificValueOfCardAsync(SetSpecificValueOfCardParams value) =>
+        _client.InvokeAsync<SetSpecificValueOfCardParams, IList<bool>>(AnkiMethods.SetSpecificValueOfCard, value);
+
+    public Task<bool?> SuspendAsync(SuspendParams value) =>
+        _client.InvokeAsync<SuspendParams, bool?>(AnkiMethods.Suspend, value);
+
+    public Task<bool?> UnsuspendAsync(UnsuspendParams value) =>
+        _client.InvokeAsync<UnsuspendParams, bool?>(AnkiMethods.Unsuspend, value);
+
+    public Task<bool?> SuspendedAsync(SuspendedParams value) =>
+        _client.InvokeAsync<SuspendedParams, bool?>(AnkiMethods.Suspended, value);
+
+    public Task<IList<bool?>?> AreSuspendedAsync(AreSuspendedParams value) =>
+        _client.InvokeAsync<AreSuspendedParams, IList<bool?>>(AnkiMethods.AreSuspended, value);
+
     public Task<IList<string>?> DeckNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
 

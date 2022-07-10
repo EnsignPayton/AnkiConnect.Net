@@ -125,6 +125,285 @@ public class AnkiClientTests
     }
 
     [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams
+        {
+            Card = 1483959291685ul,
+            Keys = new[] {"flags", "odue"},
+            NewValues = new[] {"1", "-100"}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""setSpecificValueOfCard"",
+    ""version"": 6,
+    ""params"": {
+        ""card"": 1483959291685,
+        ""keys"": [""flags"", ""odue""],
+        ""newValues"": [""1"", ""-100""]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":[true, true],\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(true, result[0]);
+        Assert.Equal(true, result[1]);
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.SuspendAsync(new SuspendParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""suspend"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":true,\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.SuspendAsync(new SuspendParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendAsync(new SuspendParams()));
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendAsync(new SuspendParams()));
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.UnsuspendAsync(new UnsuspendParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""unsuspend"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":true,\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.UnsuspendAsync(new UnsuspendParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.UnsuspendAsync(new UnsuspendParams()));
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.UnsuspendAsync(new UnsuspendParams()));
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.SuspendedAsync(new SuspendedParams
+        {
+            Card = 1483959293217ul
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""suspended"",
+    ""version"": 6,
+    ""params"": {
+        ""card"": 1483959293217
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":true,\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.SuspendedAsync(new SuspendedParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendedAsync(new SuspendedParams()));
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendedAsync(new SuspendedParams()));
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.AreSuspendedAsync(new AreSuspendedParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul, 1234567891234ul}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""areSuspended"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217, 1234567891234]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":[false, true, null],\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.AreSuspendedAsync(new AreSuspendedParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(3, result!.Count);
+        Assert.False(result[0]);
+        Assert.True(result[1]);
+        Assert.Null(result[2]);
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.AreSuspendedAsync(new AreSuspendedParams()));
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.AreSuspendedAsync(new AreSuspendedParams()));
+    }
+
+    [Fact]
     public async Task DeckNamesAsync_ShouldParseRequest()
     {
         var mockHandler = new Mock<HttpMessageHandler>();
