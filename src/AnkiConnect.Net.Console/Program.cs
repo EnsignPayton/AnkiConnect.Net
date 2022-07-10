@@ -1,15 +1,12 @@
-﻿using AnkiConnect.Net;
+﻿using System.Text.Json;
+using AnkiConnect.Net.Models;
 
-try
+var foo = new ChangeDeckParams
 {
-    var client = new HttpClient();
-    IAnkiClient ankiClient = new AnkiClient(client);
+    Cards = new[] {1502098034045ul, 1502098034048ul, 1502298033753ul},
+    Deck = "Japanese::JLPT N3"
+};
 
-    var result = await ankiClient.GetNumCardsReviewedByDayAsync();
+var bar = JsonSerializer.Serialize(foo);
 
-    Console.Read();
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.ToString());
-}
+Console.WriteLine(bar);

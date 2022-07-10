@@ -65,11 +65,24 @@ public class AnkiClient : IAnkiClient
 
     #endregion
 
+    #region IAnkiDecks
+
     public Task<IList<string>?> DeckNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
 
     public Task<IDictionary<string, int>?> DeckNamesAndIdsAsync() =>
         _client.InvokeAsync<IDictionary<string, int>>(AnkiMethods.DeckNamesAndIds);
+
+    public Task<IDictionary<string, IList<ulong>>?> GetDecksAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IDictionary<string, IList<ulong>>>(AnkiMethods.GetDecks, value);
+
+    public Task<ulong?> CreateDeckAsync(CreateDeckParams value) =>
+        _client.InvokeAsync<CreateDeckParams, ulong?>(AnkiMethods.CreateDeck, value);
+
+    public Task ChangeDeckAsync(ChangeDeckParams value) =>
+        _client.InvokeAsync(AnkiMethods.ChangeDeck, value);
+
+    #endregion
 
     public Task<GuiCurrentCardResult?> GuiCurrentCardAsync() =>
         _client.InvokeAsync<GuiCurrentCardResult>(AnkiMethods.GuiCurrentCard);

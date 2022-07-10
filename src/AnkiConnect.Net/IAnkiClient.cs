@@ -2,10 +2,8 @@
 
 namespace AnkiConnect.Net;
 
-public interface IAnkiClient : IAnkiCards
+public interface IAnkiClient : IAnkiCards, IAnkiDecks
 {
-    Task<IList<string>?> DeckNamesAsync();
-    Task<IDictionary<string, int>?> DeckNamesAndIdsAsync();
     Task<GuiCurrentCardResult?> GuiCurrentCardAsync();
     Task<bool?> GuiStartCardTimerAsync();
     Task<bool?> GuiShowQuestionAsync();
