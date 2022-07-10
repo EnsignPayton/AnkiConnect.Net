@@ -2,7 +2,7 @@
 
 namespace AnkiConnect.Net.Models;
 
-public class UnsuspendParams
+public class CardsParams
 {
     [JsonPropertyName("cards")]
     public IList<ulong> Cards { get; set; } = new List<ulong>();

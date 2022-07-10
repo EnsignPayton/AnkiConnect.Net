@@ -50,6 +50,24 @@ internal class InternalAnkiClient
         }
     }
 
+    public async Task InvokeAsync<TParams>(string action, TParams value) where TParams : class
+    {
+        try
+        {
+            var request = new AnkiRequest<TParams>(action, value);
+            var response = await InvokeAsync(request);
+            HandleResponse(response);
+        }
+        catch (AnkiException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new AnkiException(ex);
+        }
+    }
+
     public async Task<TResult?> InvokeAsync<TParams, TResult>(string action, TParams value) where TParams : class
     {
         try

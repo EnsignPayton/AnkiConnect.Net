@@ -9,7 +9,7 @@ public interface IAnkiCards
     /// </summary>
     /// <param name="value">Parameter structure</param>
     /// <returns>An array with the ease factor for each of the given cards (in the same order)</returns>
-    Task<IList<int>?> GetEaseFactorsAsync(GetEaseFactorsParams value);
+    Task<IList<int>?> GetEaseFactorsAsync(CardsParams value);
 
     /// <summary>
     /// Sets ease factor of cards by card ID
@@ -30,7 +30,6 @@ public interface IAnkiCards
     /// </remarks>
     /// <param name="value">Parameter structure</param>
     /// <returns>True if successful or false otherwise</returns>
-    // TODO: Check out this "warning_check" argument. Do we need to support this?
     Task<IList<bool>?> SetSpecificValueOfCardAsync(SetSpecificValueOfCardParams value);
 
     /// <summary>
@@ -38,14 +37,14 @@ public interface IAnkiCards
     /// </summary>
     /// <param name="value">Parameter structure</param>
     /// <returns>True if successful (at least one card wasn't already suspended) or false otherwise</returns>
-    Task<bool?> SuspendAsync(SuspendParams value);
+    Task<bool?> SuspendAsync(CardsParams value);
 
     /// <summary>
     /// Unsuspend cards by card ID
     /// </summary>
     /// <param name="value">Parameter structure</param>
     /// <returns>True if successful (at least one card was previously suspended) or false otherwise</returns>
-    Task<bool?> UnsuspendAsync(UnsuspendParams value);
+    Task<bool?> UnsuspendAsync(CardsParams value);
 
     /// <summary>
     /// Check if card is suspended by its ID
@@ -62,7 +61,7 @@ public interface IAnkiCards
     /// An array indicating whether each of the given cards is suspended (in the same order).
     /// If card doesn't exist returns null
     /// </returns>
-    Task<IList<bool?>?> AreSuspendedAsync(AreSuspendedParams value);
+    Task<IList<bool?>?> AreSuspendedAsync(CardsParams value);
 
     /// <summary>
     /// Returns an array indicating whether each of the given cards is due (in the same order)
@@ -73,7 +72,7 @@ public interface IAnkiCards
     /// </remarks>
     /// <param name="value">Parameter structure</param>
     /// <returns>An array indicating whether each of the given cards is due (in the same order)</returns>
-    Task<IList<bool>?> AreDueAsync(AreDueParams value);
+    Task<IList<bool>?> AreDueAsync(CardsParams value);
 
     /// <summary>
     /// Returns an array of the most recent intervals for each given card ID
@@ -83,7 +82,7 @@ public interface IAnkiCards
     /// </remarks>
     /// <param name="value">Parameter structure</param>
     /// <returns>An array of the most recent intervals for each given card ID</returns>
-    Task<IList<int>?> GetIntervalsAsync(GetIntervalsParams value);
+    Task<IList<int>?> GetIntervalsAsync(CardsParams value);
 
     /// <summary>
     /// Returns a 2-dimensional array of all the intervals for each given card ID
@@ -93,5 +92,62 @@ public interface IAnkiCards
     /// </remarks>
     /// <param name="value">Parameter structure</param>
     /// <returns>A 2-dimensional array of all the intervals for each given card ID</returns>
-    Task<IList<IList<int>>?> GetIntervalsCompleteAsync(GetIntervalsCompleteParams value);
+    Task<IList<IList<int>>?> GetIntervalsCompleteAsync(CardsParams value);
+
+    /// <summary>
+    /// Returns an array of card IDs for a given query
+    /// </summary>
+    /// <remarks>
+    /// Functionally equivalent to guiBrowse but doesn't use the GUI for better performance
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>An array of card IDs for a given query</returns>
+    Task<IList<ulong>?> FindCardsAsync(FindCardsParams value);
+
+    /// <summary>
+    /// Returns an unordered array of note IDs for the given card IDs
+    /// </summary>
+    /// <remarks>
+    /// For cards with the same note, the ID is only given once in the array
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>An unordered array of note IDs for the given card IDs</returns>
+    Task<IList<ulong>?> CardsToNotesAsync(CardsParams value);
+
+    /// <summary>
+    /// Returns a list of objects containing the modification time for each card ID
+    /// </summary>
+    /// <remarks>
+    /// This function is about 15 times faster than executing cardsInfo
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>A list of objects containing the modification time for each card ID</returns>
+    Task<IList<CardModTime>?> CardsModTimeAsync(CardsParams value);
+
+    /// <summary>
+    /// Returns a list of objects containing for each card ID the card fields, front and back sides including CSS,
+    /// note type, the note that the card belongs to, and deck name, last modification timestamp as well as
+    /// ease and interval
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>
+    /// A list of objects containing for each card ID the card fields, front and back sides including CSS,
+    /// note type, the note that the card belongs to, and deck name, last modification timestamp as well as
+    /// ease and interval
+    /// </returns>
+    Task<IList<CardInfo>?> CardsInfoAsync(CardsParams value);
+
+    /// <summary>
+    /// Forget cards, making the cards new again
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>Task</returns>
+    Task ForgetCardsAsync(CardsParams value);
+
+    /// <summary>
+    /// Make cards be "relearning"
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>Task</returns>
+    Task RelearnCardsAsync(CardsParams value);
 }

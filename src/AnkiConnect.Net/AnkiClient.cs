@@ -14,8 +14,8 @@ public class AnkiClient : IAnkiClient
 
     #region IAnkiCards
 
-    public Task<IList<int>?> GetEaseFactorsAsync(GetEaseFactorsParams value) =>
-        _client.InvokeAsync<GetEaseFactorsParams, IList<int>>(AnkiMethods.GetEaseFactors, value);
+    public Task<IList<int>?> GetEaseFactorsAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<int>>(AnkiMethods.GetEaseFactors, value);
 
     public Task<IList<bool>?> SetEaseFactorsAsync(SetEaseFactorsParams value) =>
         _client.InvokeAsync<SetEaseFactorsParams, IList<bool>>(AnkiMethods.SetEaseFactors, value);
@@ -23,26 +23,45 @@ public class AnkiClient : IAnkiClient
     public Task<IList<bool>?> SetSpecificValueOfCardAsync(SetSpecificValueOfCardParams value) =>
         _client.InvokeAsync<SetSpecificValueOfCardParams, IList<bool>>(AnkiMethods.SetSpecificValueOfCard, value);
 
-    public Task<bool?> SuspendAsync(SuspendParams value) =>
-        _client.InvokeAsync<SuspendParams, bool?>(AnkiMethods.Suspend, value);
+    public Task<bool?> SuspendAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, bool?>(AnkiMethods.Suspend, value);
 
-    public Task<bool?> UnsuspendAsync(UnsuspendParams value) =>
-        _client.InvokeAsync<UnsuspendParams, bool?>(AnkiMethods.Unsuspend, value);
+    public Task<bool?> UnsuspendAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, bool?>(AnkiMethods.Unsuspend, value);
 
     public Task<bool?> SuspendedAsync(SuspendedParams value) =>
         _client.InvokeAsync<SuspendedParams, bool?>(AnkiMethods.Suspended, value);
 
-    public Task<IList<bool?>?> AreSuspendedAsync(AreSuspendedParams value) =>
-        _client.InvokeAsync<AreSuspendedParams, IList<bool?>>(AnkiMethods.AreSuspended, value);
+    public Task<IList<bool?>?> AreSuspendedAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<bool?>>(AnkiMethods.AreSuspended, value);
 
-    public Task<IList<bool>?> AreDueAsync(AreDueParams value) =>
-        _client.InvokeAsync<AreDueParams, IList<bool>>(AnkiMethods.AreDue, value);
+    public Task<IList<bool>?> AreDueAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<bool>>(AnkiMethods.AreDue, value);
 
-    public Task<IList<int>?> GetIntervalsAsync(GetIntervalsParams value) =>
-        _client.InvokeAsync<GetIntervalsParams, IList<int>>(AnkiMethods.GetIntervals, value);
+    public Task<IList<int>?> GetIntervalsAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<int>>(AnkiMethods.GetIntervals, value);
 
-    public Task<IList<IList<int>>?> GetIntervalsCompleteAsync(GetIntervalsCompleteParams value) =>
-        _client.InvokeAsync<GetIntervalsCompleteParams, IList<IList<int>>>(AnkiMethods.GetIntervals, value);
+    public Task<IList<IList<int>>?> GetIntervalsCompleteAsync(CardsParams value) =>
+        _client.InvokeAsync<GetIntervalsCompleteParams, IList<IList<int>>>(AnkiMethods.GetIntervals,
+            new GetIntervalsCompleteParams(value));
+
+    public Task<IList<ulong>?> FindCardsAsync(FindCardsParams value) =>
+        _client.InvokeAsync<FindCardsParams, IList<ulong>>(AnkiMethods.FindCards, value);
+
+    public Task<IList<ulong>?> CardsToNotesAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<ulong>>(AnkiMethods.CardsToNotes, value);
+
+    public Task<IList<CardModTime>?> CardsModTimeAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<CardModTime>>(AnkiMethods.CardsModTime, value);
+
+    public Task<IList<CardInfo>?> CardsInfoAsync(CardsParams value) =>
+        _client.InvokeAsync<CardsParams, IList<CardInfo>>(AnkiMethods.CardsInfo, value);
+
+    public Task ForgetCardsAsync(CardsParams value) =>
+        _client.InvokeAsync(AnkiMethods.ForgetCards, value);
+
+    public Task RelearnCardsAsync(CardsParams value) =>
+        _client.InvokeAsync(AnkiMethods.RelearnCards, value);
 
     #endregion
 

@@ -15,4 +15,9 @@ public class SetSpecificValueOfCardParams
     [JsonPropertyOrder(2)]
     [JsonPropertyName("newValues")]
     public IList<string> NewValues { get; set; } = new List<string>();
+
+    [JsonPropertyOrder(3)]
+    [JsonPropertyName("warning_check")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool WarningCheck { get; set; }
 }

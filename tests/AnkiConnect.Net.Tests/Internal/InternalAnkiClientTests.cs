@@ -122,6 +122,65 @@ public class InternalAnkiClientTests
     }
 
     [Fact]
+    public async Task InvokeAsync_SomeInput_NoOutput_ShouldSendExpectedText()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        var httpClient = new HttpClient(mockHandler.Object);
+        var ankiClient = new InternalAnkiClient(httpClient);
+
+        mockHandler.Returns("{}");
+
+        await ankiClient.InvokeAsync("someAction", Field);
+
+        mockHandler.WasSent(@"{
+    ""action"": ""someAction"",
+    ""version"": 6,
+    ""params"": {
+        ""value"": ""Foo"",
+        ""order"": 0
+    }
+}");
+    }
+
+    [Fact]
+    public async Task InvokeAsync_SomeInput_NoOutput_ShouldThrow_WhenResponseNotValidJson()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        var httpClient = new HttpClient(mockHandler.Object);
+        var ankiClient = new InternalAnkiClient(httpClient);
+
+        mockHandler.Returns("NOT JSON");
+
+        await Assert.ThrowsAsync<AnkiException>(() => ankiClient.InvokeAsync("someAction", Field));
+    }
+
+    [Fact]
+    public async Task InvokeAsync_SomeInput_NoOutput_ShouldThrow_WhenResponseIsHttpError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        var httpClient = new HttpClient(mockHandler.Object);
+        var ankiClient = new InternalAnkiClient(httpClient);
+
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+
+        await Assert.ThrowsAsync<AnkiException>(() => ankiClient.InvokeAsync("someAction", Field));
+    }
+
+    [Fact]
+    public async Task InvokeAsync_SomeInput_NoOutput_ShouldThrow_WhenResponseHasAnkiError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        var httpClient = new HttpClient(mockHandler.Object);
+        var ankiClient = new InternalAnkiClient(httpClient);
+
+        mockHandler.Returns("{\"result\":null,\"error\":\"Anki Error Text\"}");
+
+        var ex = await Assert.ThrowsAsync<AnkiException>(() => ankiClient.InvokeAsync("someAction", Field));
+
+        Assert.Equal("Anki Error Text", ex.Message);
+    }
+
+    [Fact]
     public async Task InvokeAsync_SomeInput_SomeOutput_ShouldSendExpectedText()
     {
         var mockHandler = new Mock<HttpMessageHandler>();
