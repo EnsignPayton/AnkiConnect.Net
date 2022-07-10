@@ -1,0 +1,511 @@
+﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using AnkiConnect.Net.Models;
+using Xunit;
+
+namespace AnkiConnect.Net.Tests;
+
+public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
+{
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.GetEaseFactorsAsync(new GetEaseFactorsParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""getEaseFactors"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":[4100, 3900],\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.GetEaseFactorsAsync(new GetEaseFactorsParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(4100, result[0]);
+        Assert.Equal(3900, result[1]);
+    }
+
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.GetEaseFactorsAsync(new GetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.GetEaseFactorsAsync(new GetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.SetEaseFactorsAsync(new SetEaseFactorsParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul},
+            EaseFactors = new[] {4100, 3900}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""setEaseFactors"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217],
+        ""easeFactors"": [4100, 3900]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":[true, true],\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.SetEaseFactorsAsync(new SetEaseFactorsParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(true, result[0]);
+        Assert.Equal(true, result[1]);
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.SetEaseFactorsAsync(new SetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.SetEaseFactorsAsync(new SetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams
+        {
+            Card = 1483959291685ul,
+            Keys = new[] {"flags", "odue"},
+            NewValues = new[] {"1", "-100"}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""setSpecificValueOfCard"",
+    ""version"": 6,
+    ""params"": {
+        ""card"": 1483959291685,
+        ""keys"": [""flags"", ""odue""],
+        ""newValues"": [""1"", ""-100""]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":[true, true],\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(true, result[0]);
+        Assert.Equal(true, result[1]);
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
+    }
+
+    [Fact]
+    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.SuspendAsync(new SuspendParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""suspend"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.SuspendAsync(new SuspendParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.SuspendAsync(new SuspendParams()));
+    }
+
+    [Fact]
+    public async Task SuspendAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.SuspendAsync(new SuspendParams()));
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.UnsuspendAsync(new UnsuspendParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""unsuspend"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.UnsuspendAsync(new UnsuspendParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.UnsuspendAsync(new UnsuspendParams()));
+    }
+
+    [Fact]
+    public async Task UnsuspendAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.UnsuspendAsync(new UnsuspendParams()));
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.SuspendedAsync(new SuspendedParams
+        {
+            Card = 1483959293217ul
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""suspended"",
+    ""version"": 6,
+    ""params"": {
+        ""card"": 1483959293217
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.SuspendedAsync(new SuspendedParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.SuspendedAsync(new SuspendedParams()));
+    }
+
+    [Fact]
+    public async Task SuspendedAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.SuspendedAsync(new SuspendedParams()));
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.AreSuspendedAsync(new AreSuspendedParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul, 1234567891234ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""areSuspended"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217, 1234567891234]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":[false, true, null],\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.AreSuspendedAsync(new AreSuspendedParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(3, result!.Count);
+        Assert.False(result[0]);
+        Assert.True(result[1]);
+        Assert.Null(result[2]);
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.AreSuspendedAsync(new AreSuspendedParams()));
+    }
+
+    [Fact]
+    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.AreSuspendedAsync(new AreSuspendedParams()));
+    }
+
+    [Fact]
+    public async Task AreDueAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.AreDueAsync(new AreDueParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""areDue"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task AreDueAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":[false, true],\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.AreDueAsync(new AreDueParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.False(result[0]);
+        Assert.True(result[1]);
+    }
+
+    [Fact]
+    public async Task AreDueAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.AreDueAsync(new AreDueParams()));
+    }
+
+    [Fact]
+    public async Task AreDueAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.AreDueAsync(new AreDueParams()));
+    }
+
+    [Fact]
+    public async Task GetIntervalsAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.GetIntervalsAsync(new GetIntervalsParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""getIntervals"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task GetIntervalsAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns("{\"result\":[-14400, 3],\"error\":null}");
+        var client = GetClient();
+
+        var result = await client.GetIntervalsAsync(new GetIntervalsParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(-14400, result[0]);
+        Assert.Equal(3, result[1]);
+    }
+
+    [Fact]
+    public async Task GetIntervalsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.GetIntervalsAsync(new GetIntervalsParams()));
+    }
+
+    [Fact]
+    public async Task GetIntervalsAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.GetIntervalsAsync(new GetIntervalsParams()));
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+        var client = GetClient();
+
+        await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        Handler.WasSent(Regex.Replace(@"{
+    ""action"": ""getIntervals"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217],
+        ""complete"": true
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldParseResponse_WhenValid()
+    {
+        Handler.Returns(@"{
+    ""result"": [
+        [-120, -180, -240, -300, -360, -14400],
+        [-120, -180, -240, -300, -360, -14400, 1, 3]
+    ],
+    ""error"": null
+}");
+        var client = GetClient();
+
+        var result = await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(6, result[0].Count);
+        Assert.Equal(-120, result[0][0]);
+        Assert.Equal(-180, result[0][1]);
+        Assert.Equal(-240, result[0][2]);
+        Assert.Equal(-300, result[0][3]);
+        Assert.Equal(-360, result[0][4]);
+        Assert.Equal(-14400, result[0][5]);
+        Assert.Equal(8, result[1].Count);
+        Assert.Equal(-120, result[1][0]);
+        Assert.Equal(-180, result[1][1]);
+        Assert.Equal(-240, result[1][2]);
+        Assert.Equal(-300, result[1][3]);
+        Assert.Equal(-360, result[1][4]);
+        Assert.Equal(-14400, result[1][5]);
+        Assert.Equal(1, result[1][6]);
+        Assert.Equal(3, result[1][7]);
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        await AssertThrowsOnResponseInvalid(x =>
+            x.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseError()
+    {
+        await AssertThrowsOnResponseError(x =>
+            x.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
+    }
+}

@@ -12,6 +12,8 @@ public class AnkiClient : IAnkiClient
         _client = new InternalAnkiClient(httpClient);
     }
 
+    #region IAnkiCards
+
     public Task<IList<int>?> GetEaseFactorsAsync(GetEaseFactorsParams value) =>
         _client.InvokeAsync<GetEaseFactorsParams, IList<int>>(AnkiMethods.GetEaseFactors, value);
 
@@ -41,6 +43,8 @@ public class AnkiClient : IAnkiClient
 
     public Task<IList<IList<int>>?> GetIntervalsCompleteAsync(GetIntervalsCompleteParams value) =>
         _client.InvokeAsync<GetIntervalsCompleteParams, IList<IList<int>>>(AnkiMethods.GetIntervals, value);
+
+    #endregion
 
     public Task<IList<string>?> DeckNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
