@@ -12,72 +12,72 @@ public class AnkiClient : IAnkiClient
         _client = new InternalAnkiClient(httpClient);
     }
 
-    private Task<TResult?> InvokeAsync<TResult>(string action) =>
-        _client.InvokeAsync<TResult>(action);
+    public Task<IList<int>?> GetEaseFactorsAsync(GetEaseFactorsParams value) =>
+        _client.InvokeAsync<GetEaseFactorsParams, IList<int>>(AnkiMethods.GetEaseFactors, value);
 
-    private Task InvokeAsync(string action) =>
-        _client.InvokeAsync(action);
+    public Task<IList<bool>?> SetEaseFactorsAsync(SetEaseFactorsParams value) =>
+        _client.InvokeAsync<SetEaseFactorsParams, IList<bool>>(AnkiMethods.SetEaseFactors, value);
 
     public Task<IList<string>?> DeckNamesAsync() =>
-        InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
+        _client.InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
 
     public Task<IDictionary<string, int>?> DeckNamesAndIdsAsync() =>
-        InvokeAsync<IDictionary<string, int>>(AnkiMethods.DeckNamesAndIds);
+        _client.InvokeAsync<IDictionary<string, int>>(AnkiMethods.DeckNamesAndIds);
 
     public Task<GuiCurrentCardResult?> GuiCurrentCardAsync() =>
-        InvokeAsync<GuiCurrentCardResult>(AnkiMethods.GuiCurrentCard);
+        _client.InvokeAsync<GuiCurrentCardResult>(AnkiMethods.GuiCurrentCard);
 
     public Task<bool?> GuiStartCardTimerAsync() =>
-        InvokeAsync<bool?>(AnkiMethods.GuiStartCardTimer);
+        _client.InvokeAsync<bool?>(AnkiMethods.GuiStartCardTimer);
 
     public Task<bool?> GuiShowQuestionAsync() =>
-        InvokeAsync<bool?>(AnkiMethods.GuiShowQuestion);
+        _client.InvokeAsync<bool?>(AnkiMethods.GuiShowQuestion);
 
     public Task<bool?> GuiShowAnswerAsync() =>
-        InvokeAsync<bool?>(AnkiMethods.GuiShowAnswer);
+        _client.InvokeAsync<bool?>(AnkiMethods.GuiShowAnswer);
 
     public Task GuiDeckBrowserAsync() =>
-        InvokeAsync(AnkiMethods.GuiDeckBrowser);
+        _client.InvokeAsync(AnkiMethods.GuiDeckBrowser);
 
     public Task GuiExitAnkiAsync() =>
-        InvokeAsync(AnkiMethods.GuiExitAnki);
+        _client.InvokeAsync(AnkiMethods.GuiExitAnki);
 
     public Task GuiCheckDatabaseAsync() =>
-        InvokeAsync(AnkiMethods.GuiCheckDatabase);
+        _client.InvokeAsync(AnkiMethods.GuiCheckDatabase);
 
     public Task<RequestPermissionResult?> RequestPermissionAsync() =>
-        InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);
+        _client.InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);
 
     public Task<int?> VersionAsync() =>
-        InvokeAsync<int?>(AnkiMethods.Version);
+        _client.InvokeAsync<int?>(AnkiMethods.Version);
 
     public Task SyncAsync() =>
-        InvokeAsync(AnkiMethods.Sync);
+        _client.InvokeAsync(AnkiMethods.Sync);
 
     public Task<IList<string>?> GetProfilesAsync() =>
-        InvokeAsync<IList<string>>(AnkiMethods.GetProfiles);
+        _client.InvokeAsync<IList<string>>(AnkiMethods.GetProfiles);
 
     public Task ReloadCollectionAsync() =>
-        InvokeAsync(AnkiMethods.ReloadCollection);
+        _client.InvokeAsync(AnkiMethods.ReloadCollection);
 
     public Task<IList<string>?> ModelNamesAsync() =>
-        InvokeAsync<IList<string>>(AnkiMethods.ModelNames);
+        _client.InvokeAsync<IList<string>>(AnkiMethods.ModelNames);
 
     public Task<IDictionary<string, ulong>?> ModelNamesAndIdsAsync() =>
-        InvokeAsync<IDictionary<string, ulong>>(AnkiMethods.ModelNamesAndIds);
+        _client.InvokeAsync<IDictionary<string, ulong>>(AnkiMethods.ModelNamesAndIds);
 
     public Task<IList<string>?> GetTagsAsync() =>
-        InvokeAsync<IList<string>>(AnkiMethods.GetTags);
+        _client.InvokeAsync<IList<string>>(AnkiMethods.GetTags);
 
     public Task ClearUnusedTagsAsync() =>
-        InvokeAsync(AnkiMethods.ClearUnusedTags);
+        _client.InvokeAsync(AnkiMethods.ClearUnusedTags);
 
     public Task RemoveEmptyNotesAsync() =>
-        InvokeAsync(AnkiMethods.RemoveEmptyNotes);
+        _client.InvokeAsync(AnkiMethods.RemoveEmptyNotes);
 
     public Task<int?> GetNumCardsReviewedTodayAsync() =>
-        InvokeAsync<int?>(AnkiMethods.GetNumCardsReviewedToday);
+        _client.InvokeAsync<int?>(AnkiMethods.GetNumCardsReviewedToday);
 
     public Task<IList<object?>?> GetNumCardsReviewedByDayAsync() =>
-        InvokeAsync<IList<object?>>(AnkiMethods.GetNumCardsReviewedByDay);
+        _client.InvokeAsync<IList<object?>>(AnkiMethods.GetNumCardsReviewedByDay);
 }

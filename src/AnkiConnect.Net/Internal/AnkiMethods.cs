@@ -2,6 +2,8 @@
 
 internal static class AnkiMethods
 {
+    public const string GetEaseFactors = "getEaseFactors";
+    public const string SetEaseFactors = "setEaseFactors";
     public const string DeckNames = "deckNames";
     public const string DeckNamesAndIds = "deckNamesAndIds";
     public const string GuiCurrentCard = "guiCurrentCard";

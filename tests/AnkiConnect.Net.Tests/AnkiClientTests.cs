@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AnkiConnect.Net.Models;
 using Moq;
 using Xunit;
 
@@ -8,6 +10,120 @@ namespace AnkiConnect.Net.Tests;
 
 public class AnkiClientTests
 {
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.GetEaseFactorsAsync(new GetEaseFactorsParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""getEaseFactors"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":[4100, 3900],\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.GetEaseFactorsAsync(new GetEaseFactorsParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(4100, result[0]);
+        Assert.Equal(3900, result[1]);
+    }
+
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetEaseFactorsAsync(new GetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetEaseFactorsAsync(new GetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.SetEaseFactorsAsync(new SetEaseFactorsParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul},
+            EaseFactors = new[] {4100, 3900}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""setEaseFactors"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217],
+        ""easeFactors"": [4100, 3900]
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{\"result\":[true, true],\"error\":null}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.SetEaseFactorsAsync(new SetEaseFactorsParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(true, result[0]);
+        Assert.Equal(true, result[1]);
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SetEaseFactorsAsync(new SetEaseFactorsParams()));
+    }
+
+    [Fact]
+    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.SetEaseFactorsAsync(new SetEaseFactorsParams()));
+    }
+
     [Fact]
     public async Task DeckNamesAsync_ShouldParseRequest()
     {

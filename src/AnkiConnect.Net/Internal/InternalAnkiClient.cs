@@ -14,6 +14,36 @@ internal class InternalAnkiClient
         _httpClient = httpClient;
     }
 
+    public async Task InvokeAsync(string action)
+    {
+        try
+        {
+            var request = new AnkiRequest
+            {
+                Action = action
+            };
+
+            var requestJson = JsonSerializer.Serialize(request);
+            var requestContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
+            var message = await _httpClient.PostAsync(DefaultUrl, requestContent);
+            message.EnsureSuccessStatusCode();
+            var responseJson = await message.Content.ReadAsStringAsync();
+            var response = JsonSerializer.Deserialize<AnkiResponse>(responseJson);
+            if (response is null)
+                throw new AnkiException("Response was null");
+            if (!string.IsNullOrEmpty(response.Error))
+                throw new AnkiException(response.Error);
+        }
+        catch (AnkiException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new AnkiException(ex);
+        }
+    }
+
     public async Task<TResult?> InvokeAsync<TResult>(string action)
     {
         try
@@ -45,13 +75,14 @@ internal class InternalAnkiClient
         }
     }
 
-    public async Task InvokeAsync(string action)
+    public async Task<TResult?> InvokeAsync<TParams, TResult>(string action, TParams value) where TParams : class
     {
         try
         {
-            var request = new AnkiRequest
+            var request = new AnkiRequest<TParams>
             {
-                Action = action
+                Action = action,
+                Params = value
             };
 
             var requestJson = JsonSerializer.Serialize(request);
@@ -59,11 +90,12 @@ internal class InternalAnkiClient
             var message = await _httpClient.PostAsync(DefaultUrl, requestContent);
             message.EnsureSuccessStatusCode();
             var responseJson = await message.Content.ReadAsStringAsync();
-            var response = JsonSerializer.Deserialize<AnkiResponse>(responseJson);
+            var response = JsonSerializer.Deserialize<AnkiResponse<TResult>>(responseJson);
             if (response is null)
                 throw new AnkiException("Response was null");
             if (!string.IsNullOrEmpty(response.Error))
                 throw new AnkiException(response.Error);
+            return response.Result;
         }
         catch (AnkiException)
         {
