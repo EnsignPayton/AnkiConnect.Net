@@ -25,7 +25,7 @@ public class InternalAnkiClientTests
         mockHandler.WasSent(@"{
     ""action"": ""someAction"",
     ""version"": 6
-}".NoWhitespace());
+}");
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class InternalAnkiClientTests
         mockHandler.WasSent(@"{
     ""action"": ""someAction"",
     ""version"": 6
-}".NoWhitespace());
+}");
     }
 
     [Fact]
@@ -139,7 +139,7 @@ public class InternalAnkiClientTests
         ""value"": ""Foo"",
         ""order"": 0
     }
-}".NoWhitespace());
+}");
     }
 
     [Fact]

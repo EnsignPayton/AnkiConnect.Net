@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AnkiConnect.Net.Models;
 using Xunit;
@@ -17,13 +16,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""getEaseFactors"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -50,14 +49,14 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             EaseFactors = new[] {4100, 3900}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""setEaseFactors"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217],
         ""easeFactors"": [4100, 3900]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -69,8 +68,8 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
-        Assert.Equal(true, result[0]);
-        Assert.Equal(true, result[1]);
+        Assert.True(result[0]);
+        Assert.True(result[1]);
     }
 
     [Fact]
@@ -85,7 +84,7 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             NewValues = new[] {"1", "-100"}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""setSpecificValueOfCard"",
     ""version"": 6,
     ""params"": {
@@ -93,7 +92,7 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
         ""keys"": [""flags"", ""odue""],
         ""newValues"": [""1"", ""-100""]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -105,8 +104,8 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
-        Assert.Equal(true, result[0]);
-        Assert.Equal(true, result[1]);
+        Assert.True(result[0]);
+        Assert.True(result[1]);
     }
 
     [Fact]
@@ -119,13 +118,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""suspend"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -149,13 +148,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""unsuspend"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -179,13 +178,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Card = 1483959293217ul
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""suspended"",
     ""version"": 6,
     ""params"": {
         ""card"": 1483959293217
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -209,13 +208,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul, 1234567891234ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""areSuspended"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217, 1234567891234]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -242,13 +241,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""areDue"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -274,13 +273,13 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""getIntervals"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217]
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]
@@ -306,14 +305,14 @@ public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        Handler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(@"{
     ""action"": ""getIntervals"",
     ""version"": 6,
     ""params"": {
         ""cards"": [1483959291685, 1483959293217],
         ""complete"": true
     }
-}", @"\s+", string.Empty));
+}");
     }
 
     [Fact]

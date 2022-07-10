@@ -35,7 +35,7 @@ public static class MockHandlerExtensions
     {
         target.Protected()
             .Verify<Task<HttpResponseMessage>>("SendAsync", Times.Once(),
-                ItExpr.Is<HttpRequestMessage>(x => x.Content!.ReadAsStringAsync().Result == value),
+                ItExpr.Is<HttpRequestMessage>(x => x.Content!.ReadAsStringAsync().Result == value.NoWhitespace()),
                 ItExpr.IsAny<CancellationToken>());
     }
 }
