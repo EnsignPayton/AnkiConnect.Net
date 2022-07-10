@@ -2,21 +2,15 @@
 
 namespace AnkiConnect.Net.Internal;
 
-internal class AnkiRequest
-{
-    [JsonPropertyOrder(0)]
-    [JsonPropertyName("action")]
-    public string Action { get; set; } = string.Empty;
+internal record AnkiRequest(
+    [property: JsonPropertyOrder(0)] [property: JsonPropertyName("action")] string Action,
+    [property: JsonPropertyOrder(1)] [property: JsonPropertyName("version")] int Version = 6);
 
-    [JsonPropertyOrder(1)]
-    [JsonPropertyName("version")]
-    public int Version { get; set; } = 6;
-}
-
-internal class AnkiRequest<TParams> : AnkiRequest where TParams : class
-{
-    [JsonPropertyOrder(2)]
-    [JsonPropertyName("params")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public TParams? Params { get; set; }
-}
+internal record AnkiRequest<TParams>(
+        string Action,
+        [property: JsonPropertyOrder(2)]
+        [property: JsonPropertyName("params")]
+        [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        TParams? Params,
+        int Version = 6)
+    : AnkiRequest(Action, Version) where TParams : class;
