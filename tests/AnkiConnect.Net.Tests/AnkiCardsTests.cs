@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AnkiConnect.Net.Models;
 using Xunit;
 
-namespace AnkiConnect.Net.Tests;
+namespace AnkiConnect.Net;
 
 public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
 {
@@ -11,9 +11,8 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     public async Task GetEaseFactorsAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.GetEaseFactorsAsync(new GetEaseFactorsParams
+        await Target.GetEaseFactorsAsync(new GetEaseFactorsParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
@@ -28,12 +27,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task GetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    public async Task GetEaseFactorsAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":[4100, 3900],\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.GetEaseFactorsAsync(new GetEaseFactorsParams());
+        var result = await Target.GetEaseFactorsAsync(new GetEaseFactorsParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -42,26 +40,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.GetEaseFactorsAsync(new GetEaseFactorsParams()));
-    }
-
-    [Fact]
-    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.GetEaseFactorsAsync(new GetEaseFactorsParams()));
-    }
-
-    [Fact]
     public async Task SetEaseFactorsAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.SetEaseFactorsAsync(new SetEaseFactorsParams
+        await Target.SetEaseFactorsAsync(new SetEaseFactorsParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul},
             EaseFactors = new[] {4100, 3900}
@@ -78,12 +61,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task SetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    public async Task SetEaseFactorsAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":[true, true],\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.SetEaseFactorsAsync(new SetEaseFactorsParams());
+        var result = await Target.SetEaseFactorsAsync(new SetEaseFactorsParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -92,26 +74,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.SetEaseFactorsAsync(new SetEaseFactorsParams()));
-    }
-
-    [Fact]
-    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.SetEaseFactorsAsync(new SetEaseFactorsParams()));
-    }
-
-    [Fact]
     public async Task SetSpecificValueOfCardAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams
+        await Target.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams
         {
             Card = 1483959291685ul,
             Keys = new[] {"flags", "odue"},
@@ -130,12 +97,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task SetSpecificValueOfCardAsync_ShouldParseResponse_WhenValid()
+    public async Task SetSpecificValueOfCardAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":[true, true],\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams());
+        var result = await Target.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -144,26 +110,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
-    }
-
-    [Fact]
-    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
-    }
-
-    [Fact]
     public async Task SuspendAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.SuspendAsync(new SuspendParams
+        await Target.SuspendAsync(new SuspendParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
@@ -178,38 +129,22 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task SuspendAsync_ShouldParseResponse_WhenValid()
+    public async Task SuspendAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.SuspendAsync(new SuspendParams());
+        var result = await Target.SuspendAsync(new SuspendParams());
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task SuspendAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.SuspendAsync(new SuspendParams()));
-    }
-
-    [Fact]
-    public async Task SuspendAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.SuspendAsync(new SuspendParams()));
-    }
-
-    [Fact]
     public async Task UnsuspendAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.UnsuspendAsync(new UnsuspendParams
+        await Target.UnsuspendAsync(new UnsuspendParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
@@ -224,38 +159,22 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task UnsuspendAsync_ShouldParseResponse_WhenValid()
+    public async Task UnsuspendAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.UnsuspendAsync(new UnsuspendParams());
+        var result = await Target.UnsuspendAsync(new UnsuspendParams());
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task UnsuspendAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.UnsuspendAsync(new UnsuspendParams()));
-    }
-
-    [Fact]
-    public async Task UnsuspendAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.UnsuspendAsync(new UnsuspendParams()));
-    }
-
-    [Fact]
     public async Task SuspendedAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.SuspendedAsync(new SuspendedParams
+        await Target.SuspendedAsync(new SuspendedParams
         {
             Card = 1483959293217ul
         });
@@ -270,38 +189,22 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task SuspendedAsync_ShouldParseResponse_WhenValid()
+    public async Task SuspendedAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.SuspendedAsync(new SuspendedParams());
+        var result = await Target.SuspendedAsync(new SuspendedParams());
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task SuspendedAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.SuspendedAsync(new SuspendedParams()));
-    }
-
-    [Fact]
-    public async Task SuspendedAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.SuspendedAsync(new SuspendedParams()));
-    }
-
-    [Fact]
     public async Task AreSuspendedAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.AreSuspendedAsync(new AreSuspendedParams
+        await Target.AreSuspendedAsync(new AreSuspendedParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul, 1234567891234ul}
         });
@@ -316,12 +219,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task AreSuspendedAsync_ShouldParseResponse_WhenValid()
+    public async Task AreSuspendedAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":[false, true, null],\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.AreSuspendedAsync(new AreSuspendedParams());
+        var result = await Target.AreSuspendedAsync(new AreSuspendedParams());
 
         Assert.NotNull(result);
         Assert.Equal(3, result!.Count);
@@ -331,26 +233,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.AreSuspendedAsync(new AreSuspendedParams()));
-    }
-
-    [Fact]
-    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.AreSuspendedAsync(new AreSuspendedParams()));
-    }
-
-    [Fact]
     public async Task AreDueAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.AreDueAsync(new AreDueParams
+        await Target.AreDueAsync(new AreDueParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
@@ -365,12 +252,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task AreDueAsync_ShouldParseResponse_WhenValid()
+    public async Task AreDueAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":[false, true],\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.AreDueAsync(new AreDueParams());
+        var result = await Target.AreDueAsync(new AreDueParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -379,26 +265,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task AreDueAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.AreDueAsync(new AreDueParams()));
-    }
-
-    [Fact]
-    public async Task AreDueAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.AreDueAsync(new AreDueParams()));
-    }
-
-    [Fact]
     public async Task GetIntervalsAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.GetIntervalsAsync(new GetIntervalsParams
+        await Target.GetIntervalsAsync(new GetIntervalsParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
@@ -413,12 +284,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task GetIntervalsAsync_ShouldParseResponse_WhenValid()
+    public async Task GetIntervalsAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":[-14400, 3],\"error\":null}");
-        var client = GetClient();
 
-        var result = await client.GetIntervalsAsync(new GetIntervalsParams());
+        var result = await Target.GetIntervalsAsync(new GetIntervalsParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -427,26 +297,11 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task GetIntervalsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.GetIntervalsAsync(new GetIntervalsParams()));
-    }
-
-    [Fact]
-    public async Task GetIntervalsAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.GetIntervalsAsync(new GetIntervalsParams()));
-    }
-
-    [Fact]
     public async Task GetIntervalsCompleteAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-        var client = GetClient();
 
-        await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams
+        await Target.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
@@ -462,7 +317,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     }
 
     [Fact]
-    public async Task GetIntervalsCompleteAsync_ShouldParseResponse_WhenValid()
+    public async Task GetIntervalsCompleteAsync_ShouldParseResponse()
     {
         Handler.Returns(@"{
     ""result"": [
@@ -471,9 +326,8 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     ],
     ""error"": null
 }");
-        var client = GetClient();
 
-        var result = await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams());
+        var result = await Target.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -493,19 +347,5 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
         Assert.Equal(-14400, result[1][5]);
         Assert.Equal(1, result[1][6]);
         Assert.Equal(3, result[1][7]);
-    }
-
-    [Fact]
-    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        await AssertThrowsOnResponseInvalid(x =>
-            x.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
-    }
-
-    [Fact]
-    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseError()
-    {
-        await AssertThrowsOnResponseError(x =>
-            x.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
     }
 }

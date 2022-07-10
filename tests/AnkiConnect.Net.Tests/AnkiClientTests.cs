@@ -1,29 +1,23 @@
-using System.Net;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AnkiConnect.Net.Models;
-using Moq;
 using Xunit;
 
-namespace AnkiConnect.Net.Tests;
+namespace AnkiConnect.Net;
 
-public class AnkiClientTests
+public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
 {
-    // Unsorted Tests Below
     [Fact]
     public async Task GetEaseFactorsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GetEaseFactorsAsync(new GetEaseFactorsParams
+        await Target.GetEaseFactorsAsync(new GetEaseFactorsParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""getEaseFactors"",
     ""version"": 6,
     ""params"": {
@@ -33,13 +27,11 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    public async Task GetEaseFactorsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[4100, 3900],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[4100, 3900],\"error\":null}");
 
-        var result = await client.GetEaseFactorsAsync(new GetEaseFactorsParams());
+        var result = await Target.GetEaseFactorsAsync(new GetEaseFactorsParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -48,39 +40,17 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetEaseFactorsAsync(new GetEaseFactorsParams()));
-    }
-
-    [Fact]
-    public async Task GetEaseFactorsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetEaseFactorsAsync(new GetEaseFactorsParams()));
-    }
-
-    [Fact]
     public async Task SetEaseFactorsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.SetEaseFactorsAsync(new SetEaseFactorsParams
+        await Target.SetEaseFactorsAsync(new SetEaseFactorsParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul},
             EaseFactors = new[] {4100, 3900}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""setEaseFactors"",
     ""version"": 6,
     ""params"": {
@@ -91,13 +61,11 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task SetEaseFactorsAsync_ShouldParseResponse_WhenValid()
+    public async Task SetEaseFactorsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[true, true],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[true, true],\"error\":null}");
 
-        var result = await client.SetEaseFactorsAsync(new SetEaseFactorsParams());
+        var result = await Target.SetEaseFactorsAsync(new SetEaseFactorsParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -106,40 +74,18 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SetEaseFactorsAsync(new SetEaseFactorsParams()));
-    }
-
-    [Fact]
-    public async Task SetEaseFactorsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SetEaseFactorsAsync(new SetEaseFactorsParams()));
-    }
-
-    [Fact]
     public async Task SetSpecificValueOfCardAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams
+        await Target.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams
         {
             Card = 1483959291685ul,
             Keys = new[] {"flags", "odue"},
             NewValues = new[] {"1", "-100"}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""setSpecificValueOfCard"",
     ""version"": 6,
     ""params"": {
@@ -151,13 +97,11 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task SetSpecificValueOfCardAsync_ShouldParseResponse_WhenValid()
+    public async Task SetSpecificValueOfCardAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[true, true],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[true, true],\"error\":null}");
 
-        var result = await client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams());
+        var result = await Target.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -166,38 +110,16 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
-    }
-
-    [Fact]
-    public async Task SetSpecificValueOfCardAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SetSpecificValueOfCardAsync(new SetSpecificValueOfCardParams()));
-    }
-
-    [Fact]
     public async Task SuspendAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.SuspendAsync(new SuspendParams
+        await Target.SuspendAsync(new SuspendParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""suspend"",
     ""version"": 6,
     ""params"": {
@@ -207,51 +129,27 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task SuspendAsync_ShouldParseResponse_WhenValid()
+    public async Task SuspendAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await client.SuspendAsync(new SuspendParams());
+        var result = await Target.SuspendAsync(new SuspendParams());
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task SuspendAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendAsync(new SuspendParams()));
-    }
-
-    [Fact]
-    public async Task SuspendAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendAsync(new SuspendParams()));
-    }
-
-    [Fact]
     public async Task UnsuspendAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.UnsuspendAsync(new UnsuspendParams
+        await Target.UnsuspendAsync(new UnsuspendParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""unsuspend"",
     ""version"": 6,
     ""params"": {
@@ -261,51 +159,27 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task UnsuspendAsync_ShouldParseResponse_WhenValid()
+    public async Task UnsuspendAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await client.UnsuspendAsync(new UnsuspendParams());
+        var result = await Target.UnsuspendAsync(new UnsuspendParams());
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task UnsuspendAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.UnsuspendAsync(new UnsuspendParams()));
-    }
-
-    [Fact]
-    public async Task UnsuspendAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.UnsuspendAsync(new UnsuspendParams()));
-    }
-
-    [Fact]
     public async Task SuspendedAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.SuspendedAsync(new SuspendedParams
+        await Target.SuspendedAsync(new SuspendedParams
         {
             Card = 1483959293217ul
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""suspended"",
     ""version"": 6,
     ""params"": {
@@ -315,51 +189,27 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task SuspendedAsync_ShouldParseResponse_WhenValid()
+    public async Task SuspendedAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await client.SuspendedAsync(new SuspendedParams());
+        var result = await Target.SuspendedAsync(new SuspendedParams());
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task SuspendedAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendedAsync(new SuspendedParams()));
-    }
-
-    [Fact]
-    public async Task SuspendedAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SuspendedAsync(new SuspendedParams()));
-    }
-
-    [Fact]
     public async Task AreSuspendedAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.AreSuspendedAsync(new AreSuspendedParams
+        await Target.AreSuspendedAsync(new AreSuspendedParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul, 1234567891234ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""areSuspended"",
     ""version"": 6,
     ""params"": {
@@ -369,13 +219,11 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task AreSuspendedAsync_ShouldParseResponse_WhenValid()
+    public async Task AreSuspendedAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[false, true, null],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[false, true, null],\"error\":null}");
 
-        var result = await client.AreSuspendedAsync(new AreSuspendedParams());
+        var result = await Target.AreSuspendedAsync(new AreSuspendedParams());
 
         Assert.NotNull(result);
         Assert.Equal(3, result!.Count);
@@ -385,38 +233,16 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.AreSuspendedAsync(new AreSuspendedParams()));
-    }
-
-    [Fact]
-    public async Task AreSuspendedAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.AreSuspendedAsync(new AreSuspendedParams()));
-    }
-
-    [Fact]
     public async Task AreDueAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.AreDueAsync(new AreDueParams
+        await Target.AreDueAsync(new AreDueParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""areDue"",
     ""version"": 6,
     ""params"": {
@@ -426,13 +252,11 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task AreDueAsync_ShouldParseResponse_WhenValid()
+    public async Task AreDueAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[false, true],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[false, true],\"error\":null}");
 
-        var result = await client.AreDueAsync(new AreDueParams());
+        var result = await Target.AreDueAsync(new AreDueParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -441,38 +265,16 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task AreDueAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.AreDueAsync(new AreDueParams()));
-    }
-
-    [Fact]
-    public async Task AreDueAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.AreDueAsync(new AreDueParams()));
-    }
-
-    [Fact]
     public async Task GetIntervalsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GetIntervalsAsync(new GetIntervalsParams
+        await Target.GetIntervalsAsync(new GetIntervalsParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""getIntervals"",
     ""version"": 6,
     ""params"": {
@@ -482,13 +284,11 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetIntervalsAsync_ShouldParseResponse_WhenValid()
+    public async Task GetIntervalsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[-14400, 3],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[-14400, 3],\"error\":null}");
 
-        var result = await client.GetIntervalsAsync(new GetIntervalsParams());
+        var result = await Target.GetIntervalsAsync(new GetIntervalsParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -497,38 +297,16 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetIntervalsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsAsync(new GetIntervalsParams()));
-    }
-
-    [Fact]
-    public async Task GetIntervalsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsAsync(new GetIntervalsParams()));
-    }
-
-    [Fact]
     public async Task GetIntervalsCompleteAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams
+        await Target.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams
         {
             Cards = new[] {1483959291685ul, 1483959293217ul}
         });
 
-        mockHandler.WasSent(Regex.Replace(@"{
+        Handler.WasSent(Regex.Replace(@"{
     ""action"": ""getIntervals"",
     ""version"": 6,
     ""params"": {
@@ -539,19 +317,17 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetIntervalsCompleteAsync_ShouldParseResponse_WhenValid()
+    public async Task GetIntervalsCompleteAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(@"{
+        Handler.Returns(@"{
     ""result"": [
         [-120, -180, -240, -300, -360, -14400],
         [-120, -180, -240, -300, -360, -14400, 1, 3]
     ],
     ""error"": null
 }");
-        var client = GetClient(mockHandler);
 
-        var result = await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams());
+        var result = await Target.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams());
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -574,45 +350,21 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
-    }
-
-    [Fact]
-    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
-    }
-
-    [Fact]
     public async Task DeckNamesAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.DeckNamesAsync();
+        await Target.DeckNamesAsync();
 
-        mockHandler.WasSent("{\"action\":\"deckNames\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"deckNames\",\"version\":6}");
     }
 
     [Fact]
-    public async Task DeckNamesAsync_ShouldParseResponse_WhenValid()
+    public async Task DeckNamesAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[\"Default\"],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[\"Default\"],\"error\":null}");
 
-        var result = await client.DeckNamesAsync();
+        var result = await Target.DeckNamesAsync();
 
         Assert.NotNull(result);
         Assert.Equal(1, result!.Count);
@@ -620,45 +372,21 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task DeckNamesAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.DeckNamesAsync());
-    }
-
-    [Fact]
-    public async Task DeckNamesAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.DeckNamesAsync());
-    }
-
-    [Fact]
     public async Task DeckNamesAndIdsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.DeckNamesAndIdsAsync();
+        await Target.DeckNamesAndIdsAsync();
 
-        mockHandler.WasSent("{\"action\":\"deckNamesAndIds\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"deckNamesAndIds\",\"version\":6}");
     }
 
     [Fact]
-    public async Task DeckNamesAndIdsAsync_ShouldParseResponse_WhenValid()
+    public async Task DeckNamesAndIdsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":{\"Default\":1},\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":{\"Default\":1},\"error\":null}");
 
-        var result = await client.DeckNamesAndIdsAsync();
+        var result = await Target.DeckNamesAndIdsAsync();
 
         Assert.NotNull(result);
         Assert.Equal(1, result!.Count);
@@ -667,42 +395,19 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task DeckNamesAndIdsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.DeckNamesAndIdsAsync());
-    }
-
-    [Fact]
-    public async Task DeckNamesAndIdsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.DeckNamesAndIdsAsync());
-    }
-
-    [Fact]
     public async Task GuiCurrentCardAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiCurrentCardAsync();
+        await Target.GuiCurrentCardAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiCurrentCard\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiCurrentCard\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiCurrentCardAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiCurrentCardAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(@"{
+        Handler.Returns(@"{
     ""result"": {
         ""answer"": ""back content"",
         ""question"": ""front content"",
@@ -720,9 +425,8 @@ public class AnkiClientTests
     },
     ""error"": null
 }");
-        var client = GetClient(mockHandler);
 
-        var result = await client.GuiCurrentCardAsync();
+        var result = await Target.GuiCurrentCardAsync();
 
         Assert.NotNull(result);
         Assert.Equal("back content", result!.Answer);
@@ -750,306 +454,139 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GuiCurrentCardAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiCurrentCardAsync());
-    }
-
-    [Fact]
-    public async Task GuiCurrentCardAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiCurrentCardAsync());
-    }
-
-    [Fact]
     public async Task GuiStartCardTimerAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiStartCardTimerAsync();
+        await Target.GuiStartCardTimerAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiStartCardTimer\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiStartCardTimer\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiStartCardTimerAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiStartCardTimerAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await client.GuiStartCardTimerAsync();
+        var result = await Target.GuiStartCardTimerAsync();
 
         Assert.NotNull(result);
         Assert.True(result);
-    }
-
-    [Fact]
-    public async Task GuiStartCardTimerAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiStartCardTimerAsync());
-    }
-
-    [Fact]
-    public async Task GuiStartCardTimerAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiStartCardTimerAsync());
     }
 
     [Fact]
     public async Task GuiShowQuestionAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiShowQuestionAsync();
+        await Target.GuiShowQuestionAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiShowQuestion\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiShowQuestion\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiShowQuestionAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiShowQuestionAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await client.GuiShowQuestionAsync();
+        var result = await Target.GuiShowQuestionAsync();
 
         Assert.NotNull(result);
         Assert.True(result);
-    }
-
-    [Fact]
-    public async Task GuiShowQuestionAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiShowQuestionAsync());
-    }
-
-    [Fact]
-    public async Task GuiShowQuestionAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiShowQuestionAsync());
     }
 
     [Fact]
     public async Task GuiShowAnswerAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiShowAnswerAsync();
+        await Target.GuiShowAnswerAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiShowAnswer\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiShowAnswer\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiShowAnswerAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiShowAnswerAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await client.GuiShowAnswerAsync();
+        var result = await Target.GuiShowAnswerAsync();
 
         Assert.NotNull(result);
         Assert.True(result);
     }
 
     [Fact]
-    public async Task GuiShowAnswerAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiShowAnswerAsync());
-    }
-
-    [Fact]
-    public async Task GuiShowAnswerAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiShowAnswerAsync());
-    }
-
-    [Fact]
     public async Task GuiDeckBrowserAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiDeckBrowserAsync();
+        await Target.GuiDeckBrowserAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiDeckBrowser\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiDeckBrowser\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiDeckBrowserAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiDeckBrowserAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":null,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":null,\"error\":null}");
 
         // Does not throw
-        await client.GuiDeckBrowserAsync();
-    }
-
-    [Fact]
-    public async Task GuiDeckBrowserAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiDeckBrowserAsync());
-    }
-
-    [Fact]
-    public async Task GuiDeckBrowserAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiDeckBrowserAsync());
+        await Target.GuiDeckBrowserAsync();
     }
 
     [Fact]
     public async Task GuiExitAnkiAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiExitAnkiAsync();
+        await Target.GuiExitAnkiAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiExitAnki\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiExitAnki\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiExitAnkiAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiExitAnkiAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":null,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":null,\"error\":null}");
 
         // Does not throw
-        await client.GuiExitAnkiAsync();
-    }
-
-    [Fact]
-    public async Task GuiExitAnkiAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiExitAnkiAsync());
-    }
-
-    [Fact]
-    public async Task GuiExitAnkiAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiExitAnkiAsync());
+        await Target.GuiExitAnkiAsync();
     }
 
     [Fact]
     public async Task GuiCheckDatabaseAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GuiCheckDatabaseAsync();
+        await Target.GuiCheckDatabaseAsync();
 
-        mockHandler.WasSent("{\"action\":\"guiCheckDatabase\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"guiCheckDatabase\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GuiCheckDatabaseAsync_ShouldParseResponse_WhenValid()
+    public async Task GuiCheckDatabaseAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":true,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":true,\"error\":null}");
 
         // Does not throw
-        await client.GuiCheckDatabaseAsync();
-    }
-
-    [Fact]
-    public async Task GuiCheckDatabaseAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiCheckDatabaseAsync());
-    }
-
-    [Fact]
-    public async Task GuiCheckDatabaseAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GuiCheckDatabaseAsync());
+        await Target.GuiCheckDatabaseAsync();
     }
 
     [Fact]
     public async Task RequestPermissionAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.RequestPermissionAsync();
+        await Target.RequestPermissionAsync();
 
-        mockHandler.WasSent("{\"action\":\"requestPermission\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"requestPermission\",\"version\":6}");
     }
 
     [Fact]
-    public async Task RequestPermissionAsync_ShouldParseResponse_WhenValid_Granted()
+    public async Task RequestPermissionAsync_ShouldParseResponse_WhenGranted()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(@"{
+        Handler.Returns(@"{
     ""result"": {
         ""permission"": ""granted"",
         ""requireApiKey"": false,
@@ -1057,9 +594,8 @@ public class AnkiClientTests
     },
     ""error"": null
 }");
-        var client = GetClient(mockHandler);
 
-        var result = await client.RequestPermissionAsync();
+        var result = await Target.RequestPermissionAsync();
 
         Assert.NotNull(result);
         Assert.Equal("granted", result!.Permission);
@@ -1068,151 +604,77 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task RequestPermissionAsync_ShouldParseResponse_WhenValid_Denied()
+    public async Task RequestPermissionAsync_ShouldParseResponse_WhenDenied()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(@"{
+        Handler.Returns(@"{
     ""result"": {
         ""permission"": ""denied""
     },
     ""error"": null
 }");
-        var client = GetClient(mockHandler);
 
-        var result = await client.RequestPermissionAsync();
+        var result = await Target.RequestPermissionAsync();
 
         Assert.NotNull(result);
         Assert.Equal("denied", result!.Permission);
     }
 
     [Fact]
-    public async Task RequestPermissionAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.RequestPermissionAsync());
-    }
-
-    [Fact]
-    public async Task RequestPermissionAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.RequestPermissionAsync());
-    }
-
-    [Fact]
     public async Task VersionAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.VersionAsync();
+        await Target.VersionAsync();
 
-        mockHandler.WasSent("{\"action\":\"version\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"version\",\"version\":6}");
     }
 
     [Fact]
-    public async Task VersionAsync_ShouldParseResponse_WhenValid()
+    public async Task VersionAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":6,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":6,\"error\":null}");
 
-        var result = await client.VersionAsync();
+        var result = await Target.VersionAsync();
 
         Assert.NotNull(result);
         Assert.Equal(6, result);
     }
 
     [Fact]
-    public async Task VersionAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.VersionAsync());
-    }
-
-    [Fact]
-    public async Task VersionAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.VersionAsync());
-    }
-
-    [Fact]
     public async Task SyncAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.SyncAsync();
+        await Target.SyncAsync();
 
-        mockHandler.WasSent("{\"action\":\"sync\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"sync\",\"version\":6}");
     }
 
     [Fact]
-    public async Task SyncAsync_ShouldParseResponse_WhenValid()
+    public async Task SyncAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":null,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":null,\"error\":null}");
 
         // Does not throw
-        await client.SyncAsync();
-    }
-
-    [Fact]
-    public async Task SyncAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SyncAsync());
-    }
-
-    [Fact]
-    public async Task SyncAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.SyncAsync());
+        await Target.SyncAsync();
     }
 
     [Fact]
     public async Task GetProfilesAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GetProfilesAsync();
+        await Target.GetProfilesAsync();
 
-        mockHandler.WasSent("{\"action\":\"getProfiles\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"getProfiles\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GetProfilesAsync_ShouldParseResponse_WhenValid()
+    public async Task GetProfilesAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[\"User 1\"],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[\"User 1\"],\"error\":null}");
 
-        var result = await client.GetProfilesAsync();
+        var result = await Target.GetProfilesAsync();
 
         Assert.NotNull(result);
         Assert.Equal(1, result!.Count);
@@ -1220,88 +682,40 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetProfilesAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetProfilesAsync());
-    }
-
-    [Fact]
-    public async Task GetProfilesAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetProfilesAsync());
-    }
-
-    [Fact]
     public async Task ReloadCollectionAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.ReloadCollectionAsync();
+        await Target.ReloadCollectionAsync();
 
-        mockHandler.WasSent("{\"action\":\"reloadCollection\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"reloadCollection\",\"version\":6}");
     }
 
     [Fact]
-    public async Task ReloadCollectionAsync_ShouldParseResponse_WhenValid()
+    public async Task ReloadCollectionAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":null,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":null,\"error\":null}");
 
         // Does not throw
-        await client.ReloadCollectionAsync();
-    }
-
-    [Fact]
-    public async Task ReloadCollectionAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ReloadCollectionAsync());
-    }
-
-    [Fact]
-    public async Task ReloadCollectionAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ReloadCollectionAsync());
+        await Target.ReloadCollectionAsync();
     }
 
     [Fact]
     public async Task ModelNamesAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.ModelNamesAsync();
+        await Target.ModelNamesAsync();
 
-        mockHandler.WasSent("{\"action\":\"modelNames\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"modelNames\",\"version\":6}");
     }
 
     [Fact]
-    public async Task ModelNamesAsync_ShouldParseResponse_WhenValid()
+    public async Task ModelNamesAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[\"Basic\", \"Basic (and reversed card)\"],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[\"Basic\", \"Basic (and reversed card)\"],\"error\":null}");
 
-        var result = await client.ModelNamesAsync();
+        var result = await Target.ModelNamesAsync();
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -1310,42 +724,19 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task ModelNamesAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAsync());
-    }
-
-    [Fact]
-    public async Task ModelNamesAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAsync());
-    }
-
-    [Fact]
     public async Task ModelNamesAndIdsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.ModelNamesAndIdsAsync();
+        await Target.ModelNamesAndIdsAsync();
 
-        mockHandler.WasSent("{\"action\":\"modelNamesAndIds\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"modelNamesAndIds\",\"version\":6}");
     }
 
     [Fact]
-    public async Task ModelNamesAndIdsAsync_ShouldParseResponse_WhenValid()
+    public async Task ModelNamesAndIdsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(@"{
+        Handler.Returns(@"{
     ""result"": {
         ""Basic"": 1483883011648,
         ""Basic (and reversed card)"": 1483883011644,
@@ -1354,9 +745,8 @@ public class AnkiClientTests
     },
     ""error"": null
 }");
-        var client = GetClient(mockHandler);
 
-        var result = await client.ModelNamesAndIdsAsync();
+        var result = await Target.ModelNamesAndIdsAsync();
 
         Assert.NotNull(result);
         Assert.Equal(4, result!.Count);
@@ -1371,45 +761,21 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task ModelNamesAndIdsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAndIdsAsync());
-    }
-
-    [Fact]
-    public async Task ModelNamesAndIdsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ModelNamesAndIdsAsync());
-    }
-
-    [Fact]
     public async Task GetTagsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GetTagsAsync();
+        await Target.GetTagsAsync();
 
-        mockHandler.WasSent("{\"action\":\"getTags\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"getTags\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GetTagsAsync_ShouldParseResponse_WhenValid()
+    public async Task GetTagsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":[\"european-languages\", \"idioms\"],\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":[\"european-languages\", \"idioms\"],\"error\":null}");
 
-        var result = await client.GetTagsAsync();
+        var result = await Target.GetTagsAsync();
 
         Assert.NotNull(result);
         Assert.Equal(2, result!.Count);
@@ -1418,162 +784,61 @@ public class AnkiClientTests
     }
 
     [Fact]
-    public async Task GetTagsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetTagsAsync());
-    }
-
-    [Fact]
-    public async Task GetTagsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetTagsAsync());
-    }
-
-    [Fact]
     public async Task ClearUnusedTagsAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.ClearUnusedTagsAsync();
+        await Target.ClearUnusedTagsAsync();
 
-        mockHandler.WasSent("{\"action\":\"clearUnusedTags\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"clearUnusedTags\",\"version\":6}");
     }
 
     [Fact]
-    public async Task ClearUnusedTagsAsync_ShouldParseResponse_WhenValid()
+    public async Task ClearUnusedTagsAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":null,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":null,\"error\":null}");
 
         // Does not throw
-        await client.ClearUnusedTagsAsync();
-    }
-
-    [Fact]
-    public async Task ClearUnusedTagsAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ClearUnusedTagsAsync());
-    }
-
-    [Fact]
-    public async Task ClearUnusedTagsAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.ClearUnusedTagsAsync());
+        await Target.ClearUnusedTagsAsync();
     }
 
     [Fact]
     public async Task RemoveEmptyNotesAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.RemoveEmptyNotesAsync();
+        await Target.RemoveEmptyNotesAsync();
 
-        mockHandler.WasSent("{\"action\":\"removeEmptyNotes\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"removeEmptyNotes\",\"version\":6}");
     }
 
     [Fact]
-    public async Task RemoveEmptyNotesAsync_ShouldParseResponse_WhenValid()
+    public async Task RemoveEmptyNotesAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":null,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":null,\"error\":null}");
 
         // Does not throw
-        await client.RemoveEmptyNotesAsync();
-    }
-
-    [Fact]
-    public async Task RemoveEmptyNotesAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.RemoveEmptyNotesAsync());
-    }
-
-    [Fact]
-    public async Task RemoveEmptyNotesAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.RemoveEmptyNotesAsync());
+        await Target.RemoveEmptyNotesAsync();
     }
 
     [Fact]
     public async Task GetNumCardsReviewedTodayAsync_ShouldParseRequest()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{}");
 
-        await client.GetNumCardsReviewedTodayAsync();
+        await Target.GetNumCardsReviewedTodayAsync();
 
-        mockHandler.WasSent("{\"action\":\"getNumCardsReviewedToday\",\"version\":6}");
+        Handler.WasSent("{\"action\":\"getNumCardsReviewedToday\",\"version\":6}");
     }
 
     [Fact]
-    public async Task GetNumCardsReviewedTodayAsync_ShouldParseResponse_WhenValid()
+    public async Task GetNumCardsReviewedTodayAsync_ShouldParseResponse()
     {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("{\"result\":6,\"error\":null}");
-        var client = GetClient(mockHandler);
+        Handler.Returns("{\"result\":6,\"error\":null}");
 
-        var result = await client.GetNumCardsReviewedTodayAsync();
+        var result = await Target.GetNumCardsReviewedTodayAsync();
 
         Assert.NotNull(result);
         Assert.Equal(6, result);
-    }
-
-    [Fact]
-    public async Task GetNumCardsReviewedTodayAsync_ShouldThrow_WhenResponseInvalid()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns("Hello, world");
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetNumCardsReviewedTodayAsync());
-    }
-
-    [Fact]
-    public async Task GetNumCardsReviewedTodayAsync_ShouldThrow_WhenResponseError()
-    {
-        var mockHandler = new Mock<HttpMessageHandler>();
-        mockHandler.Returns(HttpStatusCode.InternalServerError);
-        var client = GetClient(mockHandler);
-
-        await Assert.ThrowsAsync<AnkiException>(() => client.GetNumCardsReviewedTodayAsync());
-    }
-
-    // TODO: GetNumCardsReviewedByDay Tests
-
-    private static IAnkiClient GetClient(IMock<HttpMessageHandler> mockHandler)
-    {
-        var client = new HttpClient(mockHandler.Object);
-        var anki = new AnkiClient(client);
-        return anki;
     }
 }

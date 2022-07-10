@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 
-namespace AnkiConnect.Net.Tests;
+namespace AnkiConnect.Net;
 
 public static class MockHandlerExtensions
 {
