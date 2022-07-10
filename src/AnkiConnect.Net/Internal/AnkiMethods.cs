@@ -9,6 +9,9 @@ internal static class AnkiMethods
     public const string Unsuspend = "unsuspend";
     public const string Suspended = "suspended";
     public const string AreSuspended = "areSuspended";
+    public const string AreDue = "areDue";
+    public const string GetIntervals = "getIntervals";
+
     public const string DeckNames = "deckNames";
     public const string DeckNamesAndIds = "deckNamesAndIds";
     public const string GuiCurrentCard = "guiCurrentCard";

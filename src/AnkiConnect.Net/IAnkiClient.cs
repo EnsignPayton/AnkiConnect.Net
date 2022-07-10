@@ -64,6 +64,26 @@ public interface IAnkiClient
     /// </returns>
     Task<IList<bool?>?> AreSuspendedAsync(AreSuspendedParams value);
 
+    /// <summary>
+    /// Returns an array indicating whether each of the given cards is due (in the same order)
+    /// </summary>
+    /// <remarks>
+    /// cards in the learning queue with a large interval (over 20 minutes) are treated as not due until
+    /// the time of their interval has passed, to match the way Anki treats them when reviewing.
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>An array indicating whether each of the given cards is due (in the same order)</returns>
+    Task<IList<bool>?> AreDueAsync(AreDueParams value);
+
+    /// <summary>
+    /// Returns an array of the most recent intervals for each given card ID, or a 2-dimensional array of all
+    /// the intervals for each given card ID when complete is true. Negative intervals are in seconds and
+    /// positive intervals in days.
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>An array of the most recent intervals for each given card ID</returns>
+    Task<IList<int>?> GetIntervalsAsync(GetIntervalsParams value);
+
     Task<IList<string>?> DeckNamesAsync();
     Task<IDictionary<string, int>?> DeckNamesAndIdsAsync();
     Task<GuiCurrentCardResult?> GuiCurrentCardAsync();

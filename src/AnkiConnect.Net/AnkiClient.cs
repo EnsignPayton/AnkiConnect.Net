@@ -33,6 +33,12 @@ public class AnkiClient : IAnkiClient
     public Task<IList<bool?>?> AreSuspendedAsync(AreSuspendedParams value) =>
         _client.InvokeAsync<AreSuspendedParams, IList<bool?>>(AnkiMethods.AreSuspended, value);
 
+    public Task<IList<bool>?> AreDueAsync(AreDueParams value) =>
+        _client.InvokeAsync<AreDueParams, IList<bool>>(AnkiMethods.AreDue, value);
+
+    public Task<IList<int>?> GetIntervalsAsync(GetIntervalsParams value) =>
+        _client.InvokeAsync<GetIntervalsParams, IList<int>>(AnkiMethods.GetIntervals, value);
+
     public Task<IList<string>?> DeckNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
 
