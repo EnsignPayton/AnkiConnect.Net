@@ -76,13 +76,24 @@ public interface IAnkiClient
     Task<IList<bool>?> AreDueAsync(AreDueParams value);
 
     /// <summary>
-    /// Returns an array of the most recent intervals for each given card ID, or a 2-dimensional array of all
-    /// the intervals for each given card ID when complete is true. Negative intervals are in seconds and
-    /// positive intervals in days.
+    /// Returns an array of the most recent intervals for each given card ID
     /// </summary>
+    /// <remarks>
+    /// Negative intervals are in seconds and positive intervals in days.
+    /// </remarks>
     /// <param name="value">Parameter structure</param>
     /// <returns>An array of the most recent intervals for each given card ID</returns>
     Task<IList<int>?> GetIntervalsAsync(GetIntervalsParams value);
+
+    /// <summary>
+    /// Returns a 2-dimensional array of all the intervals for each given card ID
+    /// </summary>
+    /// <remarks>
+    /// Negative intervals are in seconds and positive intervals in days.
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>A 2-dimensional array of all the intervals for each given card ID</returns>
+    Task<IList<IList<int>>?> GetIntervalsCompleteAsync(GetIntervalsCompleteParams value);
 
     Task<IList<string>?> DeckNamesAsync();
     Task<IDictionary<string, int>?> DeckNamesAndIdsAsync();

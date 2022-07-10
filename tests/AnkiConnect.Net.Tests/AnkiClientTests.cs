@@ -514,6 +514,84 @@ public class AnkiClientTests
 
         await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsAsync(new GetIntervalsParams()));
     }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldParseRequest()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("{}");
+        var client = GetClient(mockHandler);
+
+        await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams
+        {
+            Cards = new[] {1483959291685ul, 1483959293217ul}
+        });
+
+        mockHandler.WasSent(Regex.Replace(@"{
+    ""action"": ""getIntervals"",
+    ""version"": 6,
+    ""params"": {
+        ""cards"": [1483959291685, 1483959293217],
+        ""complete"": true
+    }
+}", @"\s+", string.Empty));
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldParseResponse_WhenValid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(@"{
+    ""result"": [
+        [-120, -180, -240, -300, -360, -14400],
+        [-120, -180, -240, -300, -360, -14400, 1, 3]
+    ],
+    ""error"": null
+}");
+        var client = GetClient(mockHandler);
+
+        var result = await client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(6, result[0].Count);
+        Assert.Equal(-120, result[0][0]);
+        Assert.Equal(-180, result[0][1]);
+        Assert.Equal(-240, result[0][2]);
+        Assert.Equal(-300, result[0][3]);
+        Assert.Equal(-360, result[0][4]);
+        Assert.Equal(-14400, result[0][5]);
+        Assert.Equal(8, result[1].Count);
+        Assert.Equal(-120, result[1][0]);
+        Assert.Equal(-180, result[1][1]);
+        Assert.Equal(-240, result[1][2]);
+        Assert.Equal(-300, result[1][3]);
+        Assert.Equal(-360, result[1][4]);
+        Assert.Equal(-14400, result[1][5]);
+        Assert.Equal(1, result[1][6]);
+        Assert.Equal(3, result[1][7]);
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseInvalid()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns("Hello, world");
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
+    }
+
+    [Fact]
+    public async Task GetIntervalsCompleteAsync_ShouldThrow_WhenResponseError()
+    {
+        var mockHandler = new Mock<HttpMessageHandler>();
+        mockHandler.Returns(HttpStatusCode.InternalServerError);
+        var client = GetClient(mockHandler);
+
+        await Assert.ThrowsAsync<AnkiException>(() => client.GetIntervalsCompleteAsync(new GetIntervalsCompleteParams()));
+    }
+
     [Fact]
     public async Task DeckNamesAsync_ShouldParseRequest()
     {

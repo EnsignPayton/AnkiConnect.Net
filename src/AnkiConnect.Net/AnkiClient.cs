@@ -39,6 +39,9 @@ public class AnkiClient : IAnkiClient
     public Task<IList<int>?> GetIntervalsAsync(GetIntervalsParams value) =>
         _client.InvokeAsync<GetIntervalsParams, IList<int>>(AnkiMethods.GetIntervals, value);
 
+    public Task<IList<IList<int>>?> GetIntervalsCompleteAsync(GetIntervalsCompleteParams value) =>
+        _client.InvokeAsync<GetIntervalsCompleteParams, IList<IList<int>>>(AnkiMethods.GetIntervals, value);
+
     public Task<IList<string>?> DeckNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.DeckNames);
 
