@@ -132,7 +132,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
         await Target.ChangeDeckAsync(new ChangeDeckParams
         {
             Cards = new[] {1502098034045ul, 1502098034048ul, 1502298033753ul},
-            Deck = "Japanese::JLPT N3"
+            Deck = "Japanese::JLPT_N3"
         });
 
         Handler.WasSent(@"{
@@ -140,7 +140,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     ""version"": 6,
     ""params"": {
         ""cards"": [1502098034045, 1502098034048, 1502298033753],
-        ""deck"": ""Japanese::JLPT N3""
+        ""deck"": ""Japanese::JLPT_N3""
     }
 }");
     }
