@@ -54,10 +54,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{}");
 
-        await Target.GetDecksAsync(new CardsParams
-        {
-            Cards = new[] {1502298036657ul, 1502298033753ul, 1502032366472ul}
-        });
+        await Target.GetDecksAsync(new CardsParams(1502298036657ul, 1502298033753ul, 1502032366472ul));
 
         Handler.WasSent(@"{
     ""action"": ""getDecks"",
@@ -97,10 +94,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{}");
 
-        await Target.CreateDeckAsync(new DeckParams
-        {
-            Deck = "Japanese::Tokyo"
-        });
+        await Target.CreateDeckAsync("Japanese::Tokyo");
 
         Handler.WasSent(@"{
     ""action"": ""createDeck"",
@@ -157,10 +151,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{}");
 
-        await Target.DeleteDecksAsync(new DecksParams
-        {
-            Decks = new[] {"Japanese::JLPT_N5", "Easy_Spanish"}
-        });
+        await Target.DeleteDecksAsync(new DecksParams("Japanese::JLPT_N5", "Easy_Spanish"));
 
         Handler.WasSent(@"{
     ""action"": ""deleteDecks"",
@@ -181,4 +172,3 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
         await Target.DeleteDecksAsync(new DecksParams());
     }
 }
-

@@ -9,10 +9,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.GetEaseFactorsAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul}
-        });
+        await Target.GetEaseFactorsAsync(new CardsParams(1483959291685ul, 1483959293217ul));
 
         Handler.WasSent(@"{
     ""action"": ""getEaseFactors"",
@@ -136,10 +133,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.SuspendAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul}
-        });
+        await Target.SuspendAsync(new CardsParams(1483959291685ul, 1483959293217ul));
 
         Handler.WasSent(@"{
     ""action"": ""suspend"",
@@ -166,10 +160,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.UnsuspendAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul}
-        });
+        await Target.UnsuspendAsync(new CardsParams(1483959291685ul, 1483959293217ul));
 
         Handler.WasSent(@"{
     ""action"": ""unsuspend"",
@@ -196,10 +187,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.SuspendedAsync(new SuspendedParams
-        {
-            Card = 1483959293217ul
-        });
+        await Target.SuspendedAsync(1483959293217ul);
 
         Handler.WasSent(@"{
     ""action"": ""suspended"",
@@ -226,10 +214,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.AreSuspendedAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul, 1234567891234ul}
-        });
+        await Target.AreSuspendedAsync(new CardsParams(1483959291685ul, 1483959293217ul, 1234567891234ul));
 
         Handler.WasSent(@"{
     ""action"": ""areSuspended"",
@@ -259,10 +244,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.AreDueAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul}
-        });
+        await Target.AreDueAsync(new CardsParams(1483959291685ul, 1483959293217ul));
 
         Handler.WasSent(@"{
     ""action"": ""areDue"",
@@ -291,10 +273,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.GetIntervalsAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul}
-        });
+        await Target.GetIntervalsAsync(new CardsParams(1483959291685ul, 1483959293217ul));
 
         Handler.WasSent(@"{
     ""action"": ""getIntervals"",
@@ -323,10 +302,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.GetIntervalsCompleteAsync(new CardsParams
-        {
-            Cards = new[] {1483959291685ul, 1483959293217ul}
-        });
+        await Target.GetIntervalsCompleteAsync(new CardsParams(1483959291685ul, 1483959293217ul));
 
         Handler.WasSent(@"{
     ""action"": ""getIntervals"",
@@ -376,10 +352,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.FindCardsAsync(new FindCardsParams
-        {
-            Query = "deck:current"
-        });
+        await Target.FindCardsAsync("deck:current");
 
         Handler.WasSent(@"{
     ""action"": ""findCards"",
@@ -412,10 +385,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.CardsToNotesAsync(new CardsParams
-        {
-            Cards = new[] {1502098034045ul, 1502098034048ul, 1502298033753ul}
-        });
+        await Target.CardsToNotesAsync(new CardsParams(1502098034045ul, 1502098034048ul, 1502298033753ul));
 
         Handler.WasSent(@"{
     ""action"": ""cardsToNotes"",
@@ -447,10 +417,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.CardsModTimeAsync(new CardsParams
-        {
-            Cards = new[] {1498938915662ul, 1502098034048ul}
-        });
+        await Target.CardsModTimeAsync(new CardsParams(1498938915662ul, 1502098034048ul));
 
         Handler.WasSent(@"{
     ""action"": ""cardsModTime"",
@@ -487,10 +454,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.CardsInfoAsync(new CardsParams
-        {
-            Cards = new[] {1498938915662ul, 1502098034048ul}
-        });
+        await Target.CardsInfoAsync(new CardsParams(1498938915662ul, 1502098034048ul));
 
         Handler.WasSent(@"{
     ""action"": ""cardsInfo"",
@@ -614,10 +578,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.ForgetCardsAsync(new CardsParams
-        {
-            Cards = new[] {1498938915662ul, 1502098034048ul}
-        });
+        await Target.ForgetCardsAsync(new CardsParams(1498938915662ul, 1502098034048ul));
 
         Handler.WasSent(@"{
     ""action"": ""forgetCards"",
@@ -642,10 +603,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     {
         Handler.Returns("{}");
 
-        await Target.RelearnCardsAsync(new CardsParams
-        {
-            Cards = new[] {1498938915662ul, 1502098034048ul}
-        });
+        await Target.RelearnCardsAsync(new CardsParams(1498938915662ul, 1502098034048ul));
 
         Handler.WasSent(@"{
     ""action"": ""relearnCards"",
