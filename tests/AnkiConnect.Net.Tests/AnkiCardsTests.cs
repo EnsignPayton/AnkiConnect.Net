@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using AnkiConnect.Net.Models;
-using Xunit;
+﻿using AnkiConnect.Net.Models;
 
 namespace AnkiConnect.Net;
 

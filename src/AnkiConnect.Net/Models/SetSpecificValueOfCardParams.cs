@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace AnkiConnect.Net.Models;
+﻿namespace AnkiConnect.Net.Models;
 
 public class SetSpecificValueOfCardParams
 {

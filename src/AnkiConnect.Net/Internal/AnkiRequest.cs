@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace AnkiConnect.Net.Internal;
+﻿namespace AnkiConnect.Net.Internal;
 
 internal record AnkiRequest(
     [property: JsonPropertyOrder(0)] [property: JsonPropertyName("action")] string Action,

@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using Xunit;
-
 namespace AnkiConnect.Net;
 
 public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>

@@ -25,7 +25,7 @@ internal static class AnkiMethods
     public const string GetDecks = "getDecks";
     public const string CreateDeck = "createDeck";
     public const string ChangeDeck = "changeDeck";
-    public const string DeleteDecks = "deleteDeck";
+    public const string DeleteDecks = "deleteDecks";
     public const string GetDeckConfig = "getDeckConfig";
     public const string SaveDeckConfig = "saveDeckConfig";
     public const string SetDeckConfigId = "setDeckConfigId";

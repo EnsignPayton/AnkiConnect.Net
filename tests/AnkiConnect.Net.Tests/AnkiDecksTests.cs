@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using AnkiConnect.Net.Models;
-using Xunit;
+﻿using AnkiConnect.Net.Models;
 
 namespace AnkiConnect.Net;
 
@@ -99,7 +97,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{}");
 
-        await Target.CreateDeckAsync(new CreateDeckParams
+        await Target.CreateDeckAsync(new DeckParams
         {
             Deck = "Japanese::Tokyo"
         });
@@ -118,7 +116,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{\"result\":1519323742721,\"error\":null}");
 
-        var result = await Target.CreateDeckAsync(new CreateDeckParams());
+        var result = await Target.CreateDeckAsync(new DeckParams());
 
         Assert.NotNull(result);
         Assert.Equal(1519323742721ul, result);
@@ -153,4 +151,34 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
         // Does not throw
         await Target.ChangeDeckAsync(new ChangeDeckParams());
     }
+
+    [Fact]
+    public async Task DeleteDecksAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.DeleteDecksAsync(new DecksParams
+        {
+            Decks = new[] {"Japanese::JLPT_N5", "Easy_Spanish"}
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""deleteDecks"",
+    ""version"": 6,
+    ""params"": {
+        ""decks"": [""Japanese::JLPT_N5"", ""Easy_Spanish""],
+        ""cardsToo"": true
+    }
+}");
+    }
+
+    [Fact]
+    public async Task DeleteDecksAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.DeleteDecksAsync(new DecksParams());
+    }
 }
+

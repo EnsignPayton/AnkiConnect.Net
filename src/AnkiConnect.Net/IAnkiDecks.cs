@@ -31,7 +31,7 @@ public interface IAnkiDecks
     /// </summary>
     /// <param name="value">Parameter structure</param>
     /// <returns>Deck ID</returns>
-    Task<ulong?> CreateDeckAsync(CreateDeckParams value);
+    Task<ulong?> CreateDeckAsync(DeckParams value);
 
     /// <summary>
     /// Moves cards with the given IDs to a different deck, creating the deck if it doesn't exist yet
@@ -39,4 +39,11 @@ public interface IAnkiDecks
     /// <param name="value">Parameter structure</param>
     /// <returns>Task</returns>
     Task ChangeDeckAsync(ChangeDeckParams value);
+
+    /// <summary>
+    /// Deletes decks with the given names
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>Task</returns>
+    Task DeleteDecksAsync(DecksParams value);
 }

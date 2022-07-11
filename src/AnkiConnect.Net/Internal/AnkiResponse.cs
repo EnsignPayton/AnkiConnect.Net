@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace AnkiConnect.Net.Internal;
+﻿namespace AnkiConnect.Net.Internal;
 
 internal class AnkiResponse
 {

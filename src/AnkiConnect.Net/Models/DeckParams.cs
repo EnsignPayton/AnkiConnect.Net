@@ -1,8 +1,7 @@
 ﻿namespace AnkiConnect.Net.Models;
 
-public class ChangeDeckParams : CardsParams
+public class DeckParams
 {
-    [JsonPropertyOrder(1)]
     [JsonPropertyName("deck")]
     public string Deck { get; set; } = string.Empty;
 }

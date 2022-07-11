@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using AnkiConnect.Net.Models;
+﻿using AnkiConnect.Net.Models;
 
 namespace AnkiConnect.Net.Internal;
 

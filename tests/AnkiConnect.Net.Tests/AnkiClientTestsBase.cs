@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-
-namespace AnkiConnect.Net;
+﻿namespace AnkiConnect.Net;
 
 public abstract class AnkiClientTestsBase<T> where T : class
 {

@@ -76,11 +76,14 @@ public class AnkiClient : IAnkiClient
     public Task<IDictionary<string, IList<ulong>>?> GetDecksAsync(CardsParams value) =>
         _client.InvokeAsync<CardsParams, IDictionary<string, IList<ulong>>>(AnkiMethods.GetDecks, value);
 
-    public Task<ulong?> CreateDeckAsync(CreateDeckParams value) =>
-        _client.InvokeAsync<CreateDeckParams, ulong?>(AnkiMethods.CreateDeck, value);
+    public Task<ulong?> CreateDeckAsync(DeckParams value) =>
+        _client.InvokeAsync<DeckParams, ulong?>(AnkiMethods.CreateDeck, value);
 
     public Task ChangeDeckAsync(ChangeDeckParams value) =>
         _client.InvokeAsync(AnkiMethods.ChangeDeck, value);
+
+    public Task DeleteDecksAsync(DecksParams value) =>
+        _client.InvokeAsync(AnkiMethods.DeleteDecks, new DeleteDecksParams(value));
 
     #endregion
 
