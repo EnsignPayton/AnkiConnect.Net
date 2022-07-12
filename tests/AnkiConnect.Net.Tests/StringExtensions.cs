@@ -1,9 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json;
 
 namespace AnkiConnect.Net;
 
 public static class StringExtensions
 {
-    public static string NoWhitespace(this string value) =>
-        Regex.Replace(value, @"\s+", string.Empty);
+    public static string AsJson(this string value)
+    {
+        using var doc = JsonDocument.Parse(value);
+        return JsonSerializer.Serialize(doc);
+    }
 }

@@ -85,6 +85,24 @@ public class AnkiClient : IAnkiClient
     public Task DeleteDecksAsync(DecksParams value) =>
         _client.InvokeAsync(AnkiMethods.DeleteDecks, new DeleteDecksParams(value));
 
+    public Task<object?> GetDeckConfigAsync(DeckParams value) =>
+        _client.InvokeAsync<DeckParams, object>(AnkiMethods.GetDeckConfig, value);
+
+    public Task<bool?> SaveDeckConfigAsync(DeckParams value) =>
+        _client.InvokeAsync<DeckParams, bool?>(AnkiMethods.SaveDeckConfig, value);
+
+    public Task<bool?> SetDeckConfigIdAsync(SetDeckConfigIdParams value) =>
+        _client.InvokeAsync<SetDeckConfigIdParams, bool?>(AnkiMethods.SetDeckConfigId, value);
+
+    public Task<ulong?> CloneDeckConfigIdAsync(CloneDeckConfigIdParams value) =>
+        _client.InvokeAsync<CloneDeckConfigIdParams, ulong?>(AnkiMethods.CloneDeckConfigId, value);
+
+    public Task<bool?> RemoveDeckConfigIdAsync(RemoveDeckConfigIdParams value) =>
+        _client.InvokeAsync<RemoveDeckConfigIdParams, bool?>(AnkiMethods.RemoveDeckConfigId, value);
+
+    public Task<IDictionary<ulong, DeckStats>?> GetDeckStatsAsync(DecksParams value) =>
+        _client.InvokeAsync<DecksParams, IDictionary<ulong, DeckStats>>(AnkiMethods.GetDeckStats, value);
+
     #endregion
 
     public Task<GuiCurrentCardResult?> GuiCurrentCardAsync() =>

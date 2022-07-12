@@ -31,6 +31,6 @@ public class MockHandler : HttpMessageHandler
 
     public void WasSent(string value)
     {
-        Assert.Equal(value.NoWhitespace(), RequestString);
+        Assert.Equal(value.AsJson(), RequestString);
     }
 }
