@@ -371,7 +371,7 @@ public class AnkiCardsTests : AnkiClientTestsBase<IAnkiCards>
     ""error"": null
 }");
 
-        var result = await Target.FindCardsAsync(new FindCardsParams());
+        var result = await Target.FindCardsAsync(new QueryParams());
 
         Assert.NotNull(result);
         Assert.Equal(3, result!.Count);

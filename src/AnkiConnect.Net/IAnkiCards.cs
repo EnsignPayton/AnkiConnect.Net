@@ -102,7 +102,7 @@ public interface IAnkiCards
     /// </remarks>
     /// <param name="value">Parameter structure</param>
     /// <returns>An array of card IDs for a given query</returns>
-    Task<IList<ulong>?> FindCardsAsync(FindCardsParams value);
+    Task<IList<ulong>?> FindCardsAsync(QueryParams value);
 
     /// <summary>
     /// Returns an unordered array of note IDs for the given card IDs

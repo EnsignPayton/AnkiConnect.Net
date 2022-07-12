@@ -46,8 +46,8 @@ public class AnkiClient : IAnkiClient
         _client.InvokeAsync<GetIntervalsCompleteParams, IList<IList<int>>>(AnkiMethods.GetIntervals,
             new GetIntervalsCompleteParams(value));
 
-    public Task<IList<ulong>?> FindCardsAsync(FindCardsParams value) =>
-        _client.InvokeAsync<FindCardsParams, IList<ulong>>(AnkiMethods.FindCards, value);
+    public Task<IList<ulong>?> FindCardsAsync(QueryParams value) =>
+        _client.InvokeAsync<QueryParams, IList<ulong>>(AnkiMethods.FindCards, value);
 
     public Task<IList<ulong>?> CardsToNotesAsync(CardsParams value) =>
         _client.InvokeAsync<CardsParams, IList<ulong>>(AnkiMethods.CardsToNotes, value);
@@ -111,6 +111,16 @@ public class AnkiClient : IAnkiClient
 
     public Task<IDictionary<ulong, DeckStats>?> GetDeckStatsAsync(DecksParams value) =>
         _client.InvokeAsync<DecksParams, IDictionary<ulong, DeckStats>>(AnkiMethods.GetDeckStats, value);
+
+    #endregion
+
+    #region IAnkiGui
+
+    public Task<IList<ulong>?> GuiBrowseAsync(QueryParams value) =>
+        _client.InvokeAsync<QueryParams, IList<ulong>?>(AnkiMethods.GuiBrowse, value);
+
+    public Task<IList<ulong>?> GuiSelectedNotesAsync() =>
+        _client.InvokeAsync<IList<ulong>?>(AnkiMethods.GuiSelectedNotes);
 
     #endregion
 
