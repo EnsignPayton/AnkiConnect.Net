@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+﻿using System.Text;
 using System.Text.Json;
 
 namespace AnkiConnect.Net.Internal;
@@ -88,7 +88,9 @@ internal class InternalAnkiClient
 
     private async Task<string> InvokeAsync<T>(T request)
     {
-        var message = await _httpClient.PostAsJsonAsync(DefaultUrl, request);
+        var json = JsonSerializer.Serialize(request);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var message = await _httpClient.PostAsync(DefaultUrl, content);
         message.EnsureSuccessStatusCode();
         return await message.Content.ReadAsStringAsync();
     }
