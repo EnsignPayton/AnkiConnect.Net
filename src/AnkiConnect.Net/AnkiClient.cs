@@ -1,4 +1,5 @@
-﻿using AnkiConnect.Net.Internal;
+﻿using System.Text.Json;
+using AnkiConnect.Net.Internal;
 using AnkiConnect.Net.Models;
 
 namespace AnkiConnect.Net;
@@ -85,17 +86,25 @@ public class AnkiClient : IAnkiClient
     public Task DeleteDecksAsync(DecksParams value) =>
         _client.InvokeAsync(AnkiMethods.DeleteDecks, new DeleteDecksParams(value));
 
-    public Task<object?> GetDeckConfigAsync(DeckParams value) =>
-        _client.InvokeAsync<DeckParams, object>(AnkiMethods.GetDeckConfig, value);
+    public Task<DeckConfig?> GetDeckConfigAsync(DeckParams value) =>
+        _client.InvokeAsync<DeckParams, DeckConfig>(AnkiMethods.GetDeckConfig, value);
 
-    public Task<bool?> SaveDeckConfigAsync(DeckParams value) =>
-        _client.InvokeAsync<DeckParams, bool?>(AnkiMethods.SaveDeckConfig, value);
+    public Task<bool?> SaveDeckConfigAsync(DeckConfigParams value) =>
+        _client.InvokeAsync<DeckConfigParams, bool?>(AnkiMethods.SaveDeckConfig, value);
 
     public Task<bool?> SetDeckConfigIdAsync(SetDeckConfigIdParams value) =>
         _client.InvokeAsync<SetDeckConfigIdParams, bool?>(AnkiMethods.SetDeckConfigId, value);
 
-    public Task<ulong?> CloneDeckConfigIdAsync(CloneDeckConfigIdParams value) =>
-        _client.InvokeAsync<CloneDeckConfigIdParams, ulong?>(AnkiMethods.CloneDeckConfigId, value);
+    public async Task<ulong?> CloneDeckConfigIdAsync(CloneDeckConfigIdParams value)
+    {
+        var result = await _client.InvokeAsync<CloneDeckConfigIdParams, JsonElement>(
+            AnkiMethods.CloneDeckConfigId, value);
+
+        if (result.ValueKind is JsonValueKind.Number && result.TryGetUInt64(out var u64Result))
+            return u64Result;
+
+        return null;
+    }
 
     public Task<bool?> RemoveDeckConfigIdAsync(RemoveDeckConfigIdParams value) =>
         _client.InvokeAsync<RemoveDeckConfigIdParams, bool?>(AnkiMethods.RemoveDeckConfigId, value);

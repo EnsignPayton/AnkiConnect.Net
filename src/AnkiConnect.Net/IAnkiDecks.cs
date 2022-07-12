@@ -52,16 +52,14 @@ public interface IAnkiDecks
     /// </summary>
     /// <param name="value">Parameter structure</param>
     /// <returns>The configuration group object for the given deck</returns>
-    // TODO: Parse out to an object
-    Task<object?> GetDeckConfigAsync(DeckParams value);
+    Task<DeckConfig?> GetDeckConfigAsync(DeckParams value);
 
     /// <summary>
     /// Saves the given configuration group
     /// </summary>
     /// <param name="value">Parameter structure</param>
     /// <returns>True on success or false if the ID of the configuration group is invalid</returns>
-    // TODO: Take a sensible parameter. Should match the structure of GetDeckConfigAsync return value
-    Task<bool?> SaveDeckConfigAsync(DeckParams value);
+    Task<bool?> SaveDeckConfigAsync(DeckConfigParams value);
 
     /// <summary>
     /// Changes the configuration group for the given decks to the one with the given ID
@@ -75,8 +73,7 @@ public interface IAnkiDecks
     /// the default group if this is unspecified
     /// </summary>
     /// <param name="value">Parameter structure</param>
-    /// <returns>The ID of the new configuration group, or false if the specified group to clone from does not exist</returns>
-    // TODO: How the hell does one represent a ulong / bool option type coming from json
+    /// <returns>The ID of the new configuration group, or null if the specified group to clone from does not exist</returns>
     Task<ulong?> CloneDeckConfigIdAsync(CloneDeckConfigIdParams value);
 
     /// <summary>

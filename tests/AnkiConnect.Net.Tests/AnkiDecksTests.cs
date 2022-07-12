@@ -232,7 +232,41 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
 }");
         var result = await Target.GetDeckConfigAsync(new DeckParams());
 
-        // TODO: Assert stuff once I figure out how to parse deck config
+        Assert.NotNull(result);
+        Assert.Equal(8, result!.Lapse.LeechFails);
+        Assert.Equal(1, result.Lapse.Delays.Count);
+        Assert.Equal(10, result.Lapse.Delays[0]);
+        Assert.Equal(1, result.Lapse.MinInt);
+        Assert.Equal(0, result.Lapse.LeechAction);
+        Assert.Equal(0, result.Lapse.Mult);
+        Assert.False(result.Dyn);
+        Assert.True(result.Autoplay);
+        Assert.Equal(1502970872ul, result.Mod);
+        Assert.Equal(1, result.Id);
+        Assert.Equal(60, result.MaxTaken);
+        Assert.True(result.New.Bury);
+        Assert.Equal(1, result.New.Order);
+        Assert.Equal(2500, result.New.InitialFactor);
+        Assert.Equal(20, result.New.PerDay);
+        Assert.Equal(2, result.New.Delays.Count);
+        Assert.Equal(1, result.New.Delays[0]);
+        Assert.Equal(10, result.New.Delays[1]);
+        Assert.True(result.New.Separate);
+        Assert.Equal(3, result.New.Ints.Count);
+        Assert.Equal(1, result.New.Ints[0]);
+        Assert.Equal(4, result.New.Ints[1]);
+        Assert.Equal(7, result.New.Ints[2]);
+        Assert.Equal("Default", result.Name);
+        Assert.True(result.Rev.Bury);
+        Assert.Equal(1, result.Rev.IvlFct);
+        Assert.Equal(1.3, result.Rev.Ease4);
+        Assert.Equal(36500, result.Rev.MaxIvl);
+        Assert.Equal(100, result.Rev.PerDay);
+        Assert.Equal(1, result.Rev.MinSpace);
+        Assert.Equal(0.05, result.Rev.Fuzz);
+        Assert.Equal(0, result.Timer);
+        Assert.True(result.ReplayQ);
+        Assert.Equal(-1, result.Usn);
     }
 
     [Fact]
@@ -240,9 +274,92 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{}");
 
-        await Target.SaveDeckConfigAsync(new DeckParams());
+        await Target.SaveDeckConfigAsync(new DeckConfigParams
+        {
+            Config = new DeckConfig()
+            {
+                Lapse = new LapseConfig
+                {
+                    LeechFails = 8,
+                    Delays = new[] {10},
+                    MinInt = 1,
+                    LeechAction = 0,
+                    Mult = 0
+                },
+                Dyn = false,
+                Autoplay = true,
+                Mod = 1502970872ul,
+                Id = 1,
+                MaxTaken = 60,
+                New = new NewConfig
+                {
+                    Bury = true,
+                    Order = 1,
+                    InitialFactor = 2500,
+                    PerDay = 20,
+                    Delays = new[] {1, 10},
+                    Separate = true,
+                    Ints = new[] {1, 4, 7}
+                },
+                Name = "Default",
+                Rev = new RevConfig
+                {
+                    Bury = true,
+                    IvlFct = 1,
+                    Ease4 = 1.3,
+                    MaxIvl = 36500,
+                    PerDay = 100,
+                    MinSpace = 1,
+                    Fuzz = 0.05
+                },
+                Timer = 0,
+                ReplayQ = true,
+                Usn = -1
+            }
+        });
 
-        // TODO: Assert stuff once I figure out how to parse deck config
+        Handler.WasSent(@"{
+    ""action"": ""saveDeckConfig"",
+    ""version"": 6,
+    ""params"": {
+        ""config"": {
+            ""lapse"": {
+                ""leechFails"": 8,
+                ""delays"": [10],
+                ""minInt"": 1,
+                ""leechAction"": 0,
+                ""mult"": 0
+            },
+            ""dyn"": false,
+            ""autoplay"": true,
+            ""mod"": 1502970872,
+            ""id"": 1,
+            ""maxTaken"": 60,
+            ""new"": {
+                ""bury"": true,
+                ""order"": 1,
+                ""initialFactor"": 2500,
+                ""perDay"": 20,
+                ""delays"": [1, 10],
+                ""separate"": true,
+                ""ints"": [1, 4, 7]
+            },
+            ""name"": ""Default"",
+            ""rev"": {
+                ""bury"": true,
+                ""ivlFct"": 1,
+                ""ease4"": 1.3,
+                ""maxIvl"": 36500,
+                ""perDay"": 100,
+                ""minSpace"": 1,
+                ""fuzz"": 0.05
+            },
+            ""timer"": 0,
+            ""replayq"": true,
+            ""usn"": -1
+        }
+    }
+}");
     }
 
     [Fact]
@@ -250,7 +367,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
 
-        var result = await Target.SaveDeckConfigAsync(new DeckParams());
+        var result = await Target.SaveDeckConfigAsync(new DeckConfigParams());
 
         Assert.NotNull(result);
         Assert.True(result);
@@ -337,10 +454,9 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
     {
         Handler.Returns("{\"result\":false,\"error\":null}");
 
-        // var result = await Target.CloneDeckConfigIdAsync(new CloneDeckConfigIdParams());
+        var result = await Target.CloneDeckConfigIdAsync(new CloneDeckConfigIdParams());
 
-        // TODO: Assert something
-        await Task.CompletedTask;
+        Assert.Null(result);
     }
 
     [Fact]

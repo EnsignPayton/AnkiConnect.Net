@@ -1,17 +1,15 @@
-﻿using AnkiConnect.Net;
-using AnkiConnect.Net.Models;
+﻿using System.Text.Json;
+using AnkiConnect.Net;
 
 var client = new AnkiClient(new HttpClient());
 
-var t1 = await client.GetEaseFactorsAsync(new CardsParams
+var deckConfig = await client.GetDeckConfigAsync("Mining");
+
+PrettyPrint(deckConfig);
+
+void PrettyPrint<T>(T value)
 {
-    Cards = new[] {0ul, 1ul, 2ul}
-});
-
-var t2 = await client.GetEaseFactorsAsync(new CardsParams(0ul, 1ul, 2ul));
-
-var t3 = await client.CreateDeckAsync("deck");
-
-var t4 = await client.FindCardsAsync("query");
-
-var t5 = await client.SuspendedAsync(0ul);
+    var options = new JsonSerializerOptions {WriteIndented = true};
+    var json = JsonSerializer.Serialize(value, options);
+    Console.WriteLine(json);
+}
