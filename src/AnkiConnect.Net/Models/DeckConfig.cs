@@ -20,7 +20,7 @@ public class DeckConfig
 
     [JsonPropertyOrder(4)]
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public ulong Id { get; set; }
 
     [JsonPropertyOrder(5)]
     [JsonPropertyName("maxTaken")]

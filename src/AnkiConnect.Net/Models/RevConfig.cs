@@ -8,7 +8,7 @@ public class RevConfig
 
     [JsonPropertyOrder(1)]
     [JsonPropertyName("ivlFct")]
-    public int IvlFct { get; set; }
+    public double IvlFct { get; set; }
 
     [JsonPropertyOrder(2)]
     [JsonPropertyName("ease4")]

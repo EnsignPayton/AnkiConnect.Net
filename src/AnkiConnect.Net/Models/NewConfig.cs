@@ -20,7 +20,7 @@ public class NewConfig
 
     [JsonPropertyOrder(4)]
     [JsonPropertyName("delays")]
-    public IList<int> Delays { get; set; } = new List<int>();
+    public IList<double> Delays { get; set; } = new List<double>();
 
     [JsonPropertyOrder(5)]
     [JsonPropertyName("separate")]

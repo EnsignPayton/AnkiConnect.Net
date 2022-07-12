@@ -8,7 +8,7 @@ public class LapseConfig
 
     [JsonPropertyOrder(1)]
     [JsonPropertyName("delays")]
-    public IList<int> Delays { get; set; } = new List<int>();
+    public IList<double> Delays { get; set; } = new List<double>();
 
     [JsonPropertyOrder(2)]
     [JsonPropertyName("minInt")]
@@ -20,5 +20,5 @@ public class LapseConfig
 
     [JsonPropertyOrder(4)]
     [JsonPropertyName("mult")]
-    public int Mult { get; set; }
+    public double Mult { get; set; }
 }

@@ -242,7 +242,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
         Assert.False(result.Dyn);
         Assert.True(result.Autoplay);
         Assert.Equal(1502970872ul, result.Mod);
-        Assert.Equal(1, result.Id);
+        Assert.Equal(1ul, result.Id);
         Assert.Equal(60, result.MaxTaken);
         Assert.True(result.New.Bury);
         Assert.Equal(1, result.New.Order);
@@ -276,12 +276,12 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
 
         await Target.SaveDeckConfigAsync(new DeckConfigParams
         {
-            Config = new DeckConfig()
+            Config = new DeckConfig
             {
                 Lapse = new LapseConfig
                 {
                     LeechFails = 8,
-                    Delays = new[] {10},
+                    Delays = new[] {10.0},
                     MinInt = 1,
                     LeechAction = 0,
                     Mult = 0
@@ -297,7 +297,7 @@ public class AnkiDecksTests : AnkiClientTestsBase<IAnkiDecks>
                     Order = 1,
                     InitialFactor = 2500,
                     PerDay = 20,
-                    Delays = new[] {1, 10},
+                    Delays = new[] {1.0, 10.0},
                     Separate = true,
                     Ints = new[] {1, 4, 7}
                 },
