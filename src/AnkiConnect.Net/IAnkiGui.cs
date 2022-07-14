@@ -20,4 +20,49 @@ public interface IAnkiGui
     /// </summary>
     /// <returns>Selected note ids</returns>
     Task<IList<ulong>?> GuiSelectedNotesAsync();
+
+    // TODO: GuiAddCardsAsync
+
+    /// <summary>
+    /// Opens the edit dialog with a note corresponding to given note ID
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>Task</returns>
+    Task GuiEditNoteAsync(NoteParams value);
+
+    /// <summary>
+    /// Returns information about the current card or null if not in review mode
+    /// </summary>
+    /// <returns></returns>
+    Task<GuiCurrentCardResult?> GuiCurrentCardAsync();
+
+    /// <summary>
+    /// Starts or resets the timerStarted value for the current card.
+    /// </summary>
+    /// <remarks>
+    /// This is useful for deferring the start time to when it is displayed via the API, allowing the recorded
+    /// time taken to answer the card to be more accurate when calling <see cref="GuiAnswerCardAsync"/>
+    /// </remarks>
+    /// <returns>Success</returns>
+    Task<bool?> GuiStartCardTimerAsync();
+
+    /// <summary>
+    /// Shows question text for the current card
+    /// </summary>
+    /// <returns>True if in review mode or false otherwise</returns>
+    Task<bool?> GuiShowQuestionAsync();
+
+    /// <summary>
+    /// Shows answer text for the current card
+    /// </summary>
+    /// <returns>True if in review mode or false otherwise</returns>
+    Task<bool?> GuiShowAnswerAsync();
+
+    /// <summary>
+    /// Answers the current card
+    /// </summary>
+    /// <remarks>Note that the answer for the current card must be displayed before any answer can be accepted by Anki</remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>True if succeeded or false otherwise</returns>
+    Task<bool?> GuiAnswerCardAsync(GuiAnswerCardParams value);
 }

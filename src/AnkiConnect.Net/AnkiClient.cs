@@ -122,7 +122,8 @@ public class AnkiClient : IAnkiClient
     public Task<IList<ulong>?> GuiSelectedNotesAsync() =>
         _client.InvokeAsync<IList<ulong>?>(AnkiMethods.GuiSelectedNotes);
 
-    #endregion
+    public Task GuiEditNoteAsync(NoteParams value) =>
+        _client.InvokeAsync(AnkiMethods.GuiEditNote, value);
 
     public Task<GuiCurrentCardResult?> GuiCurrentCardAsync() =>
         _client.InvokeAsync<GuiCurrentCardResult>(AnkiMethods.GuiCurrentCard);
@@ -135,6 +136,11 @@ public class AnkiClient : IAnkiClient
 
     public Task<bool?> GuiShowAnswerAsync() =>
         _client.InvokeAsync<bool?>(AnkiMethods.GuiShowAnswer);
+
+    public Task<bool?> GuiAnswerCardAsync(GuiAnswerCardParams value) =>
+        _client.InvokeAsync<GuiAnswerCardParams, bool?>(AnkiMethods.GuiAnswerCard, value);
+
+    #endregion
 
     public Task GuiDeckBrowserAsync() =>
         _client.InvokeAsync(AnkiMethods.GuiDeckBrowser);
