@@ -260,4 +260,115 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
         Assert.NotNull(result);
         Assert.True(result);
     }
+
+    [Fact]
+    public async Task GuiDeckOverviewAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.GuiDeckOverviewAsync("Default");
+
+        Handler.WasSent(@"{
+    ""action"": ""guiDeckOverview"",
+    ""version"": 6,
+    ""params"": {
+        ""name"": ""Default""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task GuiDeckOverviewAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+
+        var result = await Target.GuiDeckOverviewAsync(new DeckNameParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task GuiDeckBrowserAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.GuiDeckBrowserAsync();
+
+        Handler.WasSent("{\"action\":\"guiDeckBrowser\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task GuiDeckBrowserAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.GuiDeckBrowserAsync();
+    }
+
+    [Fact]
+    public async Task GuiDeckReviewAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.GuiDeckReviewAsync("Default");
+
+        Handler.WasSent(@"{
+    ""action"": ""guiDeckReview"",
+    ""version"": 6,
+    ""params"": {
+        ""name"": ""Default""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task GuiDeckReviewAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+
+        var result = await Target.GuiDeckReviewAsync(new DeckNameParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task GuiExitAnkiAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.GuiExitAnkiAsync();
+
+        Handler.WasSent("{\"action\":\"guiExitAnki\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task GuiExitAnkiAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.GuiExitAnkiAsync();
+    }
+
+    [Fact]
+    public async Task GuiCheckDatabaseAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.GuiCheckDatabaseAsync();
+
+        Handler.WasSent("{\"action\":\"guiCheckDatabase\",\"version\":6}");
+    }
+
+    [Fact]
+    public async Task GuiCheckDatabaseAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+
+        // Does not throw
+        await Target.GuiCheckDatabaseAsync();
+    }
 }

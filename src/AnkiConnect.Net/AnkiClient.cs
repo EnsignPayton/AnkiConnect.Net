@@ -140,16 +140,22 @@ public class AnkiClient : IAnkiClient
     public Task<bool?> GuiAnswerCardAsync(GuiAnswerCardParams value) =>
         _client.InvokeAsync<GuiAnswerCardParams, bool?>(AnkiMethods.GuiAnswerCard, value);
 
-    #endregion
+    public Task<bool?> GuiDeckOverviewAsync(DeckNameParams value) =>
+        _client.InvokeAsync<DeckNameParams, bool?>(AnkiMethods.GuiDeckOverview, value);
 
     public Task GuiDeckBrowserAsync() =>
         _client.InvokeAsync(AnkiMethods.GuiDeckBrowser);
+
+    public Task<bool?> GuiDeckReviewAsync(DeckNameParams value) =>
+        _client.InvokeAsync<DeckNameParams, bool?>(AnkiMethods.GuiDeckReview, value);
 
     public Task GuiExitAnkiAsync() =>
         _client.InvokeAsync(AnkiMethods.GuiExitAnki);
 
     public Task GuiCheckDatabaseAsync() =>
         _client.InvokeAsync(AnkiMethods.GuiCheckDatabase);
+
+    #endregion
 
     public Task<RequestPermissionResult?> RequestPermissionAsync() =>
         _client.InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);

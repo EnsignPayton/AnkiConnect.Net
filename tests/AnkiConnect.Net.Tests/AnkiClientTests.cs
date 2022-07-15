@@ -3,63 +3,6 @@ namespace AnkiConnect.Net;
 public class AnkiClientTests : AnkiClientTestsBase<IAnkiClient>
 {
     [Fact]
-    public async Task GuiDeckBrowserAsync_ShouldParseRequest()
-    {
-        Handler.Returns("{}");
-
-        await Target.GuiDeckBrowserAsync();
-
-        Handler.WasSent("{\"action\":\"guiDeckBrowser\",\"version\":6}");
-    }
-
-    [Fact]
-    public async Task GuiDeckBrowserAsync_ShouldParseResponse()
-    {
-        Handler.Returns("{\"result\":null,\"error\":null}");
-
-        // Does not throw
-        await Target.GuiDeckBrowserAsync();
-    }
-
-    [Fact]
-    public async Task GuiExitAnkiAsync_ShouldParseRequest()
-    {
-        Handler.Returns("{}");
-
-        await Target.GuiExitAnkiAsync();
-
-        Handler.WasSent("{\"action\":\"guiExitAnki\",\"version\":6}");
-    }
-
-    [Fact]
-    public async Task GuiExitAnkiAsync_ShouldParseResponse()
-    {
-        Handler.Returns("{\"result\":null,\"error\":null}");
-
-        // Does not throw
-        await Target.GuiExitAnkiAsync();
-    }
-
-    [Fact]
-    public async Task GuiCheckDatabaseAsync_ShouldParseRequest()
-    {
-        Handler.Returns("{}");
-
-        await Target.GuiCheckDatabaseAsync();
-
-        Handler.WasSent("{\"action\":\"guiCheckDatabase\",\"version\":6}");
-    }
-
-    [Fact]
-    public async Task GuiCheckDatabaseAsync_ShouldParseResponse()
-    {
-        Handler.Returns("{\"result\":true,\"error\":null}");
-
-        // Does not throw
-        await Target.GuiCheckDatabaseAsync();
-    }
-
-    [Fact]
     public async Task RequestPermissionAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");

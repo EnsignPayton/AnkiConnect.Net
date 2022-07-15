@@ -65,4 +65,37 @@ public interface IAnkiGui
     /// <param name="value">Parameter structure</param>
     /// <returns>True if succeeded or false otherwise</returns>
     Task<bool?> GuiAnswerCardAsync(GuiAnswerCardParams value);
+
+    /// <summary>
+    /// Opens the Deck Overview dialog for the deck with the given name
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>True if succeeded or false otherwise</returns>
+    Task<bool?> GuiDeckOverviewAsync(DeckNameParams value);
+
+    /// <summary>
+    /// Opens the Deck Browser dialog
+    /// </summary>
+    /// <returns>Task</returns>
+    Task GuiDeckBrowserAsync();
+
+    /// <summary>
+    /// Starts review for the deck with the given name
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>True if succeeded or false otherwise</returns>
+    Task<bool?> GuiDeckReviewAsync(DeckNameParams value);
+
+    /// <summary>
+    /// Schedules a request to gracefully close Anki
+    /// </summary>
+    /// <remarks>This operation is asynchronous, so it will return immediately and won't wait until the Anki process actually terminates</remarks>
+    /// <returns>Task</returns>
+    Task GuiExitAnkiAsync();
+
+    /// <summary>
+    /// Requests a database check, but returns immediately without waiting for the check to complete
+    /// </summary>
+    /// <returns>Task</returns>
+    Task GuiCheckDatabaseAsync();
 }
