@@ -88,7 +88,13 @@ internal class InternalAnkiClient
 
     private async Task<string> InvokeAsync<T>(T request)
     {
-        var json = JsonSerializer.Serialize(request);
+        var json = JsonSerializer.Serialize(request, new JsonSerializerOptions
+        {
+            Converters =
+            {
+                new StoreMediaFileParamsConverter()
+            }
+        });
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var message = await _httpClient.PostAsync(DefaultUrl, content);
         message.EnsureSuccessStatusCode();

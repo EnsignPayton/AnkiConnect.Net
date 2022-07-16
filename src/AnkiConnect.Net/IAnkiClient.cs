@@ -2,7 +2,7 @@
 
 namespace AnkiConnect.Net;
 
-public interface IAnkiClient : IAnkiCards, IAnkiDecks, IAnkiGui
+public interface IAnkiClient : IAnkiCards, IAnkiDecks, IAnkiGui, IAnkiMedia
 {
     Task<RequestPermissionResult?> RequestPermissionAsync();
     Task<int?> VersionAsync();

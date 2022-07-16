@@ -157,6 +157,26 @@ public class AnkiClient : IAnkiClient
 
     #endregion
 
+    #region IAnkiMedia
+
+    public Task<string?> StoreMediaFileAsync(StoreMediaFileParams value) =>
+        _client.InvokeAsync<StoreMediaFileParams, string?>(AnkiMethods.StoreMediaFile, value);
+
+    public async Task<string?> RetrieveMediaFileAsync(FileNameParams value)
+    {
+        var result = await _client.InvokeAsync<FileNameParams, JsonElement>(AnkiMethods.RetrieveMediaFile, value);
+
+        return result.ValueKind is JsonValueKind.String ? result.GetString() : null;
+    }
+
+    public Task<IList<string>?> GetMediaFileNamesAsync(PatternParams value) =>
+        _client.InvokeAsync<PatternParams, IList<string>>(AnkiMethods.GetMediaFilesNames, value);
+
+    public Task DeleteMediaFileAsync(FileNameParams value) =>
+        _client.InvokeAsync(AnkiMethods.DeleteMediaFile, value);
+
+    #endregion
+
     public Task<RequestPermissionResult?> RequestPermissionAsync() =>
         _client.InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);
 
