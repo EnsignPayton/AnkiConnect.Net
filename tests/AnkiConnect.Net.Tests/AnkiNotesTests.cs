@@ -1,7 +1,69 @@
-﻿namespace AnkiConnect.Net;
+﻿using AnkiConnect.Net.Models;
+
+namespace AnkiConnect.Net;
 
 public class AnkiNotesTests : AnkiClientTestsBase<IAnkiNotes>
 {
+    [Fact]
+    public async Task AddTagsAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.AddTagsAsync(new NoteTagsParams
+        {
+            Notes = new[] { 1483959289817ul,1483959291695ul},
+            Tags = "european-languages"
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""addTags"",
+    ""version"": 6,
+    ""params"": {
+        ""notes"": [1483959289817, 1483959291695],
+        ""tags"": ""european-languages""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task AddTagsAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.AddTagsAsync(new NoteTagsParams());
+    }
+
+    [Fact]
+    public async Task RemoveTagsAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.RemoveTagsAsync(new NoteTagsParams
+        {
+            Notes = new[] { 1483959289817ul,1483959291695ul},
+            Tags = "european-languages"
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""removeTags"",
+    ""version"": 6,
+    ""params"": {
+        ""notes"": [1483959289817, 1483959291695],
+        ""tags"": ""european-languages""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task RemoveTagsAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.RemoveTagsAsync(new NoteTagsParams());
+    }
+
     [Fact]
     public async Task GetTagsAsync_ShouldParseRequest()
     {

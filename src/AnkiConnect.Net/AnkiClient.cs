@@ -242,6 +242,12 @@ public class AnkiClient : IAnkiClient
 
     #region IAnkiNotes
 
+    public Task AddTagsAsync(NoteTagsParams value) =>
+        _client.InvokeAsync(AnkiMethods.AddTags, value);
+
+    public Task RemoveTagsAsync(NoteTagsParams value) =>
+        _client.InvokeAsync(AnkiMethods.RemoveTags, value);
+
     public Task<IList<string>?> GetTagsAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.GetTags);
 
