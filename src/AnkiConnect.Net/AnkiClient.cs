@@ -216,6 +216,13 @@ public class AnkiClient : IAnkiClient
     public Task<IDictionary<string, ulong>?> ModelNamesAndIdsAsync() =>
         _client.InvokeAsync<IDictionary<string, ulong>>(AnkiMethods.ModelNamesAndIds);
 
+    public Task<IList<string>?> ModelFieldNamesAsync(ModelNameParams value) =>
+        _client.InvokeAsync<ModelNameParams, IList<string>>(AnkiMethods.ModelFieldNames, value);
+
+    public Task<IDictionary<string, IList<IList<string>>>?> ModelFieldsOnTemplatesAsync(ModelNameParams value) =>
+        _client.InvokeAsync<ModelNameParams, IDictionary<string, IList<IList<string>>>>(
+            AnkiMethods.ModelFieldsOnTemplates, value);
+
     #endregion
 
     #region IAnkiNotes

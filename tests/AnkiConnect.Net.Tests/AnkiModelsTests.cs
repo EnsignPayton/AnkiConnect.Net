@@ -1,4 +1,6 @@
-﻿namespace AnkiConnect.Net;
+﻿using AnkiConnect.Net.Models;
+
+namespace AnkiConnect.Net;
 
 public class AnkiModelsTests : AnkiClientTestsBase<IAnkiModels>
 {
@@ -60,5 +62,77 @@ public class AnkiModelsTests : AnkiClientTestsBase<IAnkiModels>
         Assert.Equal(1483883011631ul, result["Basic (optional reversed card)"]);
         Assert.Contains("Cloze", result);
         Assert.Equal(1483883011630ul, result["Cloze"]);
+    }
+
+    [Fact]
+    public async Task ModelFieldNamesAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ModelFieldNamesAsync("Basic");
+
+        Handler.WasSent(@"{
+    ""action"": ""modelFieldNames"",
+    ""version"": 6,
+    ""params"": {
+        ""modelName"": ""Basic""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ModelFieldNamesAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":[\"Front\",\"Back\"],\"error\":null}");
+
+        var result = await Target.ModelFieldNamesAsync(new ModelNameParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal("Front", result[0]);
+        Assert.Equal("Back", result[1]);
+    }
+
+    [Fact]
+    public async Task ModelFieldsOnTemplatesAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ModelFieldsOnTemplatesAsync("Basic (and reversed card)");
+
+        Handler.WasSent(@"{
+    ""action"": ""modelFieldsOnTemplates"",
+    ""version"": 6,
+    ""params"": {
+        ""modelName"": ""Basic (and reversed card)""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ModelFieldsOnTemplatesAsync_ShouldParseResponse()
+    {
+        Handler.Returns(@"{
+    ""result"": {
+        ""Card 1"": [[""Front""], [""Back""]],
+        ""Card 2"": [[""Back""], [""Front""]]
+    },
+    ""error"": null
+}");
+
+        var result = await Target.ModelFieldsOnTemplatesAsync(new ModelNameParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.Equal(2, result["Card 1"].Count);
+        Assert.Equal(1, result["Card 1"][0].Count);
+        Assert.Equal("Front", result["Card 1"][0][0]);
+        Assert.Equal(1, result["Card 1"][1].Count);
+        Assert.Equal("Back", result["Card 1"][1][0]);
+        Assert.Equal(2, result["Card 2"].Count);
+        Assert.Equal(1, result["Card 2"][0].Count);
+        Assert.Equal("Back", result["Card 2"][0][0]);
+        Assert.Equal(1, result["Card 2"][1].Count);
+        Assert.Equal("Front", result["Card 2"][1][0]);
     }
 }
