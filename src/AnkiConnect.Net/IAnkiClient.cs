@@ -1,14 +1,7 @@
-﻿using AnkiConnect.Net.Models;
+﻿namespace AnkiConnect.Net;
 
-namespace AnkiConnect.Net;
-
-public interface IAnkiClient : IAnkiCards, IAnkiDecks, IAnkiGui, IAnkiMedia
+public interface IAnkiClient : IAnkiCards, IAnkiDecks, IAnkiGui, IAnkiMedia, IAnkiMisc
 {
-    Task<RequestPermissionResult?> RequestPermissionAsync();
-    Task<int?> VersionAsync();
-    Task SyncAsync();
-    Task<IList<string>?> GetProfilesAsync();
-    Task ReloadCollectionAsync();
     Task<IList<string>?> ModelNamesAsync();
     Task<IDictionary<string, ulong>?> ModelNamesAndIdsAsync();
     Task<IList<string>?> GetTagsAsync();

@@ -177,6 +177,8 @@ public class AnkiClient : IAnkiClient
 
     #endregion
 
+    #region IAnkiMisc
+
     public Task<RequestPermissionResult?> RequestPermissionAsync() =>
         _client.InvokeAsync<RequestPermissionResult>(AnkiMethods.RequestPermission);
 
@@ -191,6 +193,8 @@ public class AnkiClient : IAnkiClient
 
     public Task ReloadCollectionAsync() =>
         _client.InvokeAsync(AnkiMethods.ReloadCollection);
+
+    #endregion
 
     public Task<IList<string>?> ModelNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.ModelNames);
