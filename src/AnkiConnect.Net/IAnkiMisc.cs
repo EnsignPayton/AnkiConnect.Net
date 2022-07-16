@@ -34,6 +34,24 @@ public interface IAnkiMisc
     Task<int?> VersionAsync();
 
     /// <summary>
+    /// Gets information about AnkiConnect APIs available
+    /// </summary>
+    /// <remarks>
+    /// The request supports the following params:
+    ///
+    /// <see cref="ApiReflectInfo.Scopes"/> - An array of scopes to get reflection information about. The only
+    /// currently supported value is "actions".
+    ///
+    /// <see cref="ApiReflectInfo.Actions"/> - Either null or an array of API method names to check for. If the value
+    /// is null, the result will list all of the available API actions. If the value is an array of strings, the result
+    /// will only contain actions which went in this array
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>A list of which scopes were used and a value for each scope. For example, the "actions" scope will
+    /// contain an "actions" property which contains a list of supported action names</returns>
+    Task<ApiReflectResult?> ApiReflectAsync(ApiReflectParams value);
+
+    /// <summary>
     /// Synchronizes the local Anki collections with AnkiWeb
     /// </summary>
     /// <returns>Task</returns>
@@ -44,6 +62,34 @@ public interface IAnkiMisc
     /// </summary>
     /// <returns>Profiles</returns>
     Task<IList<string>?> GetProfilesAsync();
+
+    /// <summary>
+    /// Selects the profile specified in request
+    /// </summary>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>Result</returns>
+    Task<bool?> LoadProfileAsync(NameParams value);
+
+    // TODO: Multi
+
+    /// <summary>
+    /// Exports a given deck in .apkg format
+    /// </summary>
+    /// <remarks>
+    /// The optional property <see cref="ExportPackageParams.IncludeScheduleData"/> (default is false) can be specified
+    /// to include the cards' scheduling data
+    /// </remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>True if successful or false otherwise</returns>
+    Task<bool?> ExportPackageAsync(ExportPackageParams value);
+
+    /// <summary>
+    /// Imports a file in .apkg format into the collection
+    /// </summary>
+    /// <remarks>Note that the file path is relative to Anki's collection.media folder, not to the client</remarks>
+    /// <param name="value">Parameter structure</param>
+    /// <returns>True if successful or false otherwise</returns>
+    Task<bool?> ImportPackageAsync(PathParams value);
 
     /// <summary>
     /// Tell anki to reload all data from the database

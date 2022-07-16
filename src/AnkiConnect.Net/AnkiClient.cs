@@ -185,11 +185,23 @@ public class AnkiClient : IAnkiClient
     public Task<int?> VersionAsync() =>
         _client.InvokeAsync<int?>(AnkiMethods.Version);
 
+    public Task<ApiReflectResult?> ApiReflectAsync(ApiReflectParams value) =>
+        _client.InvokeAsync<ApiReflectParams, ApiReflectResult>(AnkiMethods.ApiReflect, value);
+
     public Task SyncAsync() =>
         _client.InvokeAsync(AnkiMethods.Sync);
 
     public Task<IList<string>?> GetProfilesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.GetProfiles);
+
+    public Task<bool?> LoadProfileAsync(NameParams value) =>
+        _client.InvokeAsync<NameParams, bool?>(AnkiMethods.LoadProfile, value);
+
+    public Task<bool?> ExportPackageAsync(ExportPackageParams value) =>
+        _client.InvokeAsync<ExportPackageParams, bool?>(AnkiMethods.ExportPackage, value);
+
+    public Task<bool?> ImportPackageAsync(PathParams value) =>
+        _client.InvokeAsync<PathParams, bool?>(AnkiMethods.ImportPackage, value);
 
     public Task ReloadCollectionAsync() =>
         _client.InvokeAsync(AnkiMethods.ReloadCollection);

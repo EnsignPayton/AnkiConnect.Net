@@ -1,4 +1,6 @@
-﻿namespace AnkiConnect.Net;
+﻿using AnkiConnect.Net.Models;
+
+namespace AnkiConnect.Net;
 
 public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
 {
@@ -70,6 +72,48 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
     }
 
     [Fact]
+    public async Task ApiReflectAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ApiReflectAsync(new ApiReflectParams
+        {
+            Scopes = new[] {"actions", "invalidType"},
+            Actions = new[] {"apiReflect", "invalidMethod"}
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""apiReflect"",
+    ""version"": 6,
+    ""params"": {
+        ""scopes"": [""actions"", ""invalidType""],
+        ""actions"": [""apiReflect"", ""invalidMethod""]
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ApiReflectAsync_ShouldParseResponse()
+    {
+        Handler.Returns(@"{
+    ""result"": {
+        ""scopes"": [""actions""],
+        ""actions"": [""apiReflect""]
+    },
+    ""error"": null
+}");
+
+        var result = await Target.ApiReflectAsync(new ApiReflectParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(1, result!.Scopes.Count);
+        Assert.Equal("actions", result.Scopes[0]);
+        Assert.NotNull(result.Actions);
+        Assert.Equal(1, result.Actions!.Count);
+        Assert.Equal("apiReflect", result.Actions[0]);
+    }
+
+    [Fact]
     public async Task SyncAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
@@ -108,6 +152,94 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
         Assert.NotNull(result);
         Assert.Equal(1, result!.Count);
         Assert.Equal("User 1", result[0]);
+    }
+
+    [Fact]
+    public async Task LoadProfileAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.LoadProfileAsync("user1");
+
+        Handler.WasSent(@"{
+    ""action"": ""loadProfile"",
+    ""version"": 6,
+    ""params"": {
+        ""name"": ""user1""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task LoadProfileAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+
+        var result = await Target.LoadProfileAsync(new NameParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task ExportPackageAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ExportPackageAsync(new ExportPackageParams
+        {
+            Deck = "Default",
+            Path = "/data/Deck.apkg",
+            IncludeScheduleData = true
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""exportPackage"",
+    ""version"": 6,
+    ""params"": {
+        ""deck"": ""Default"",
+        ""path"": ""/data/Deck.apkg"",
+        ""includeSched"": true
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ExportPackageAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+
+        var result = await Target.ExportPackageAsync(new ExportPackageParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task ImportPackageAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ImportPackageAsync("/data/Deck.apkg");
+
+        Handler.WasSent(@"{
+    ""action"": ""importPackage"",
+    ""version"": 6,
+    ""params"": {
+        ""path"": ""/data/Deck.apkg""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ImportPackageAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":true,\"error\":null}");
+
+        var result = await Target.ImportPackageAsync(new PathParams());
+
+        Assert.NotNull(result);
+        Assert.True(result);
     }
 
     [Fact]
