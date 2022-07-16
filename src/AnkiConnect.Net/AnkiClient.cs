@@ -254,6 +254,21 @@ public class AnkiClient : IAnkiClient
     public Task ClearUnusedTagsAsync() =>
         _client.InvokeAsync(AnkiMethods.ClearUnusedTags);
 
+    public Task ReplaceTagsAsync(ReplaceTagsParams value) =>
+        _client.InvokeAsync(AnkiMethods.ReplaceTags, value);
+
+    public Task ReplaceTagsInAllNotesAsync(ReplaceTagsInAllNotesParams value) =>
+        _client.InvokeAsync(AnkiMethods.ReplaceTagsInAllNotes, value);
+
+    public Task<IList<ulong>?> FindNotesAsync(QueryParams value) =>
+        _client.InvokeAsync<QueryParams, IList<ulong>>(AnkiMethods.FindNotes, value);
+
+    public Task<IList<NoteInfo>?> NotesInfoAsync(NotesParams value) =>
+        _client.InvokeAsync<NotesParams, IList<NoteInfo>>(AnkiMethods.NotesInfo, value);
+
+    public Task DeleteNotesAsync(NotesParams value) =>
+        _client.InvokeAsync(AnkiMethods.DeleteNotes, value);
+
     public Task RemoveEmptyNotesAsync() =>
         _client.InvokeAsync(AnkiMethods.RemoveEmptyNotes);
 
