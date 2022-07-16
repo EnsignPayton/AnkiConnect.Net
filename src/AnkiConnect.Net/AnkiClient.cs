@@ -208,11 +208,17 @@ public class AnkiClient : IAnkiClient
 
     #endregion
 
+    #region IAnkiModels
+
     public Task<IList<string>?> ModelNamesAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.ModelNames);
 
     public Task<IDictionary<string, ulong>?> ModelNamesAndIdsAsync() =>
         _client.InvokeAsync<IDictionary<string, ulong>>(AnkiMethods.ModelNamesAndIds);
+
+    #endregion
+
+    #region IAnkiNotes
 
     public Task<IList<string>?> GetTagsAsync() =>
         _client.InvokeAsync<IList<string>>(AnkiMethods.GetTags);
@@ -223,9 +229,15 @@ public class AnkiClient : IAnkiClient
     public Task RemoveEmptyNotesAsync() =>
         _client.InvokeAsync(AnkiMethods.RemoveEmptyNotes);
 
+    #endregion
+
+    #region IAnkiStats
+
     public Task<int?> GetNumCardsReviewedTodayAsync() =>
         _client.InvokeAsync<int?>(AnkiMethods.GetNumCardsReviewedToday);
 
     public Task<IList<object?>?> GetNumCardsReviewedByDayAsync() =>
         _client.InvokeAsync<IList<object?>>(AnkiMethods.GetNumCardsReviewedByDay);
+
+    #endregion
 }
