@@ -135,4 +135,202 @@ public class AnkiModelsTests : AnkiClientTestsBase<IAnkiModels>
         Assert.Equal(1, result["Card 2"][1].Count);
         Assert.Equal("Front", result["Card 2"][1][0]);
     }
+
+    [Fact]
+    public async Task ModelTemplatesAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ModelTemplatesAsync("Basic (and reversed card)");
+
+        Handler.WasSent(@"{
+    ""action"": ""modelTemplates"",
+    ""version"": 6,
+    ""params"": {
+        ""modelName"": ""Basic (and reversed card)""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ModelTemplatesAsync_ShouldParseResponse()
+    {
+        Handler.Returns(@"{
+            ""result"": {
+                ""Card 1"": {
+                    ""Front"": ""{{Front}}"",
+                    ""Back"": ""{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}""
+                },
+                ""Card 2"": {
+                    ""Front"": ""{{Back}}"",
+                    ""Back"": ""{{FrontSide}}\n\n<hr id=answer>\n\n{{Front}}""
+                }
+            },
+            ""error"": null
+        }");
+
+        var result = await Target.ModelTemplatesAsync(new ModelNameParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result!.Count);
+        Assert.True(result.ContainsKey("Card 1"));
+        Assert.Equal("{{Front}}", result["Card 1"].Front);
+        Assert.Equal("{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}", result["Card 1"].Back);
+        Assert.True(result.ContainsKey("Card 2"));
+        Assert.Equal("{{Back}}", result["Card 2"].Front);
+        Assert.Equal("{{FrontSide}}\n\n<hr id=answer>\n\n{{Front}}", result["Card 2"].Back);
+    }
+
+    [Fact]
+    public async Task ModelStylingAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.ModelStylingAsync("Basic (and reversed card)");
+
+        Handler.WasSent(@"{
+    ""action"": ""modelStyling"",
+    ""version"": 6,
+    ""params"": {
+        ""modelName"": ""Basic (and reversed card)""
+    }
+}");
+    }
+
+    [Fact]
+    public async Task ModelStylingAsync_ShouldParseResponse()
+    {
+        Handler.Returns(@"{
+    ""result"": {
+        ""css"": "".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n""
+    },
+    ""error"": null
+}");
+
+        var result = await Target.ModelStylingAsync(new ModelNameParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(
+            ".card {\n font-family: arial;\n font-size: 20px;\n text-align: center;\n color: black;\n background-color: white;\n}\n",
+            result!.Css);
+    }
+
+    [Fact]
+    public async Task UpdateModelTemplatesAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.UpdateModelTemplatesAsync(new UpdateModelTemplatesData
+        {
+            Name = "Custom",
+            Templates =
+            {
+                {
+                    "Card 1", new CardTemplate
+                    {
+                        Front = "{{Question}}?",
+                        Back = "{{Answer}}!"
+                    }
+                }
+            }
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""updateModelTemplates"",
+    ""version"": 6,
+    ""params"": {
+        ""model"": {
+            ""name"": ""Custom"",
+            ""templates"": {
+                ""Card 1"": {
+                    ""Front"": ""{{Question}}?"",
+                    ""Back"": ""{{Answer}}!""
+                }
+            }
+        }
+    }
+}");
+    }
+
+    [Fact]
+    public async Task UpdateModelTemplatesAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.UpdateModelTemplatesAsync(new UpdateModelTemplatesParams());
+    }
+
+    [Fact]
+    public async Task UpdateModelStylingAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.UpdateModelStylingAsync(new UpdateModelStylingData
+        {
+            Name = "Custom",
+            Css = "p { color: blue; }"
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""updateModelStyling"",
+    ""version"": 6,
+    ""params"": {
+        ""model"": {
+            ""name"": ""Custom"",
+            ""css"": ""p { color: blue; }""
+        }
+    }
+}");
+    }
+
+    [Fact]
+    public async Task UpdateModelStylingAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":null,\"error\":null}");
+
+        // Does not throw
+        await Target.UpdateModelStylingAsync(new UpdateModelStylingParams());
+    }
+
+    [Fact]
+    public async Task FindAndReplaceInModelsAsync_ShouldParseRequest()
+    {
+        Handler.Returns("{}");
+
+        await Target.FindAndReplaceInModelsAsync(new FindAndReplaceInModelsData
+        {
+            FindText = "text_to_replace",
+            ReplaceText = "replace_with_text",
+            Front = true,
+            Back = true,
+            Css = true
+        });
+
+        Handler.WasSent(@"{
+    ""action"": ""findAndReplaceInModels"",
+    ""version"": 6,
+    ""params"": {
+        ""model"": {
+            ""modelName"": """",
+            ""findText"": ""text_to_replace"",
+            ""replaceText"": ""replace_with_text"",
+            ""front"": true,
+            ""back"": true,
+            ""css"": true
+        }
+    }
+}");
+    }
+
+    [Fact]
+    public async Task FindAndReplaceInModelsAsync_ShouldParseResponse()
+    {
+        Handler.Returns("{\"result\":1,\"error\":null}");
+
+        var result = await Target.FindAndReplaceInModelsAsync(new FindAndReplaceInModelsParams());
+
+        Assert.NotNull(result);
+        Assert.Equal(1, result);
+    }
 }

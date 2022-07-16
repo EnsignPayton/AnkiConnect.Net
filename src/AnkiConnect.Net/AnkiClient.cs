@@ -223,6 +223,21 @@ public class AnkiClient : IAnkiClient
         _client.InvokeAsync<ModelNameParams, IDictionary<string, IList<IList<string>>>>(
             AnkiMethods.ModelFieldsOnTemplates, value);
 
+    public Task<IDictionary<string, CardTemplate>?> ModelTemplatesAsync(ModelNameParams value) =>
+        _client.InvokeAsync<ModelNameParams, IDictionary<string, CardTemplate>>(AnkiMethods.ModelTemplates, value);
+
+    public Task<ModelStyling?> ModelStylingAsync(ModelNameParams value) =>
+        _client.InvokeAsync<ModelNameParams, ModelStyling>(AnkiMethods.ModelStyling, value);
+
+    public Task UpdateModelTemplatesAsync(UpdateModelTemplatesParams value) =>
+        _client.InvokeAsync(AnkiMethods.UpdateModelTemplates, value);
+
+    public Task UpdateModelStylingAsync(UpdateModelStylingParams value) =>
+        _client.InvokeAsync(AnkiMethods.UpdateModelStyling, value);
+
+    public Task<int?> FindAndReplaceInModelsAsync(FindAndReplaceInModelsParams value) =>
+        _client.InvokeAsync<FindAndReplaceInModelsParams, int?>(AnkiMethods.FindAndReplaceInModels, value);
+
     #endregion
 
     #region IAnkiNotes
