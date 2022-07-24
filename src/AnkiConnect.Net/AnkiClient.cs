@@ -279,8 +279,11 @@ public class AnkiClient : IAnkiClient
     public Task<int?> GetNumCardsReviewedTodayAsync() =>
         _client.InvokeAsync<int?>(AnkiMethods.GetNumCardsReviewedToday);
 
-    public Task<IList<object?>?> GetNumCardsReviewedByDayAsync() =>
-        _client.InvokeAsync<IList<object?>>(AnkiMethods.GetNumCardsReviewedByDay);
+    public Task<string?> GetCollectionStatsHtmlAsync(WholeCollectionParams value) =>
+        _client.InvokeAsync<WholeCollectionParams, string?>(AnkiMethods.GetCollectionStatsHtml, value);
+
+    public Task<ulong?> GetLatestReviewIdAsync(DeckParams value) =>
+        _client.InvokeAsync<DeckParams, ulong?>(AnkiMethods.GetLatestReviewId, value);
 
     #endregion
 }

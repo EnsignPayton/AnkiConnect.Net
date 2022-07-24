@@ -21,7 +21,6 @@ public class StoreMediaFileParams
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Url { get; set; }
 
-    // TODO: JsonIgnore when it's true. Custom converter required?
     [JsonPropertyOrder(4)]
     [JsonPropertyName("deleteExisting")]
     public bool DeleteExisting { get; set; } = true;
