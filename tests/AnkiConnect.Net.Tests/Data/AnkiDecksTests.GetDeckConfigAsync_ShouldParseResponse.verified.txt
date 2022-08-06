@@ -1,0 +1,42 @@
+﻿{
+  Lapse: {
+    LeechFails: 8,
+    Delays: [
+      10.0
+    ],
+    MinInt: 1
+  },
+  Dyn: false,
+  Autoplay: true,
+  Mod: 1502970872,
+  Id: 1,
+  MaxTaken: 60,
+  New: {
+    Bury: true,
+    Order: 1,
+    InitialFactor: 2500,
+    PerDay: 20,
+    Delays: [
+      1.0,
+      10.0
+    ],
+    Separate: true,
+    Ints: [
+      1,
+      4,
+      7
+    ]
+  },
+  Name: Default,
+  Rev: {
+    Bury: true,
+    IvlFct: 1.0,
+    Ease4: 1.3,
+    MaxIvl: 36500,
+    PerDay: 100,
+    MinSpace: 1,
+    Fuzz: 0.05
+  },
+  ReplayQ: true,
+  Usn: -1
+}

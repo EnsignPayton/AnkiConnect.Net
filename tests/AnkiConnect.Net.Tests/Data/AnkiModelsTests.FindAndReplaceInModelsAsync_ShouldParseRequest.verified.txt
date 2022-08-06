@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"findAndReplaceInModels","version":6,"params":{"model":{"modelName":"","findText":"text_to_replace","replaceText":"replace_with_text","front":true,"back":true,"css":true}}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

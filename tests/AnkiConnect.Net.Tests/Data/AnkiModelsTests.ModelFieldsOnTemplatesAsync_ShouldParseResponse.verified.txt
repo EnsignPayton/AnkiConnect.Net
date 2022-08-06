@@ -1,0 +1,18 @@
+﻿{
+  Card 1: [
+    [
+      Front
+    ],
+    [
+      Back
+    ]
+  ],
+  Card 2: [
+    [
+      Back
+    ],
+    [
+      Front
+    ]
+  ]
+}

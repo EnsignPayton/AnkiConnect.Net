@@ -1,0 +1,8 @@
+﻿{
+  Scopes: [
+    actions
+  ],
+  Actions: [
+    apiReflect
+  ]
+}

@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"storeMediaFile","version":6,"params":{"filename":"_hello.txt","data":"SGVsbG8sIHdvcmxkIQ=="}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

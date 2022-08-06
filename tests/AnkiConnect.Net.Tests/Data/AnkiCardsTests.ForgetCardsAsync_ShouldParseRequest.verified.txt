@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"forgetCards","version":6,"params":{"cards":[1498938915662,1502098034048]}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

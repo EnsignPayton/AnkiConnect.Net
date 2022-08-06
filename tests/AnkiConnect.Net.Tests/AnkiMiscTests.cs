@@ -2,16 +2,15 @@
 
 namespace AnkiConnect.Net;
 
+[UsesVerify]
 public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
 {
     [Fact]
     public async Task RequestPermissionAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.RequestPermissionAsync();
-
-        Handler.WasSent("{\"action\":\"requestPermission\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -27,11 +26,7 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
 }");
 
         var result = await Target.RequestPermissionAsync();
-
-        Assert.NotNull(result);
-        Assert.Equal("granted", result!.Permission);
-        Assert.False(result.RequireApiKey);
-        Assert.Equal(6, result.Version);
+        await VerifyResponse(result);
     }
 
     [Fact]
@@ -45,19 +40,15 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
 }");
 
         var result = await Target.RequestPermissionAsync();
-
-        Assert.NotNull(result);
-        Assert.Equal("denied", result!.Permission);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task VersionAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.VersionAsync();
-
-        Handler.WasSent("{\"action\":\"version\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -66,30 +57,19 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
         Handler.Returns("{\"result\":6,\"error\":null}");
 
         var result = await Target.VersionAsync();
-
-        Assert.NotNull(result);
-        Assert.Equal(6, result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task ApiReflectAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.ApiReflectAsync(new ApiReflectParams
         {
             Scopes = new[] {"actions", "invalidType"},
             Actions = new[] {"apiReflect", "invalidMethod"}
         });
-
-        Handler.WasSent(@"{
-    ""action"": ""apiReflect"",
-    ""version"": 6,
-    ""params"": {
-        ""scopes"": [""actions"", ""invalidType""],
-        ""actions"": [""apiReflect"", ""invalidMethod""]
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -104,23 +84,15 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
 }");
 
         var result = await Target.ApiReflectAsync(new ApiReflectParams());
-
-        Assert.NotNull(result);
-        Assert.Equal(1, result!.Scopes.Count);
-        Assert.Equal("actions", result.Scopes[0]);
-        Assert.NotNull(result.Actions);
-        Assert.Equal(1, result.Actions!.Count);
-        Assert.Equal("apiReflect", result.Actions[0]);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task SyncAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.SyncAsync();
-
-        Handler.WasSent("{\"action\":\"sync\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -136,10 +108,8 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
     public async Task GetProfilesAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GetProfilesAsync();
-
-        Handler.WasSent("{\"action\":\"getProfiles\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -148,26 +118,15 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
         Handler.Returns("{\"result\":[\"User 1\"],\"error\":null}");
 
         var result = await Target.GetProfilesAsync();
-
-        Assert.NotNull(result);
-        Assert.Equal(1, result!.Count);
-        Assert.Equal("User 1", result[0]);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task LoadProfileAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.LoadProfileAsync("user1");
-
-        Handler.WasSent(@"{
-    ""action"": ""loadProfile"",
-    ""version"": 6,
-    ""params"": {
-        ""name"": ""user1""
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -176,32 +135,20 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
         Handler.Returns("{\"result\":true,\"error\":null}");
 
         var result = await Target.LoadProfileAsync(new NameParams());
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task ExportPackageAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.ExportPackageAsync(new ExportPackageParams
         {
             Deck = "Default",
             Path = "/data/Deck.apkg",
             IncludeScheduleData = true
         });
-
-        Handler.WasSent(@"{
-    ""action"": ""exportPackage"",
-    ""version"": 6,
-    ""params"": {
-        ""deck"": ""Default"",
-        ""path"": ""/data/Deck.apkg"",
-        ""includeSched"": true
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -210,25 +157,15 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
         Handler.Returns("{\"result\":true,\"error\":null}");
 
         var result = await Target.ExportPackageAsync(new ExportPackageParams());
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task ImportPackageAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.ImportPackageAsync("/data/Deck.apkg");
-
-        Handler.WasSent(@"{
-    ""action"": ""importPackage"",
-    ""version"": 6,
-    ""params"": {
-        ""path"": ""/data/Deck.apkg""
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -237,19 +174,15 @@ public class AnkiMiscTests : AnkiClientTestsBase<IAnkiMisc>
         Handler.Returns("{\"result\":true,\"error\":null}");
 
         var result = await Target.ImportPackageAsync(new PathParams());
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task ReloadCollectionAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.ReloadCollectionAsync();
-
-        Handler.WasSent("{\"action\":\"reloadCollection\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]

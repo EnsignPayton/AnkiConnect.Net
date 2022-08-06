@@ -1,0 +1,20 @@
+﻿{
+  Card 1: {
+    Front: {{Front}},
+    Back:
+{{FrontSide}}
+
+<hr id=answer>
+
+{{Back}}
+  },
+  Card 2: {
+    Front: {{Back}},
+    Back:
+{{FrontSide}}
+
+<hr id=answer>
+
+{{Front}}
+  }
+}

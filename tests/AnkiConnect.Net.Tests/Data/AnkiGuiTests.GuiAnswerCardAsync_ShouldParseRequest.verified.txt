@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"guiAnswerCard","version":6,"params":{"ease":1}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

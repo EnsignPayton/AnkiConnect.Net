@@ -1,0 +1,4 @@
+﻿{
+  Permission: denied,
+  RequireApiKey: false
+}

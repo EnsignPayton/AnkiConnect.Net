@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"guiBrowse","version":6,"params":{"query":"deck:current"}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

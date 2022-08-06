@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"setEaseFactors","version":6,"params":{"cards":[1483959291685,1483959293217],"easeFactors":[4100,3900]}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

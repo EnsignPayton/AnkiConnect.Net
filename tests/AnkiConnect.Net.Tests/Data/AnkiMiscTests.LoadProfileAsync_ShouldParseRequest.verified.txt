@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"loadProfile","version":6,"params":{"name":"user1"}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

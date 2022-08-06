@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"getDeckConfig","version":6,"params":{"deck":"Default"}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

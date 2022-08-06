@@ -1,0 +1,6 @@
+﻿{
+  Basic: 1483883011648,
+  Basic (and reversed card): 1483883011644,
+  Basic (optional reversed card): 1483883011631,
+  Cloze: 1483883011630
+}

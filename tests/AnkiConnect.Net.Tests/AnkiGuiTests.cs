@@ -2,22 +2,15 @@
 
 namespace AnkiConnect.Net;
 
+[UsesVerify]
 public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
 {
     [Fact]
     public async Task GuiBrowseAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiBrowseAsync("deck:current");
-
-        Handler.WasSent(@"{
-    ""action"": ""guiBrowse"",
-    ""version"": 6,
-    ""params"": {
-        ""query"": ""deck:current""
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -29,22 +22,15 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
 }");
 
         var result = await Target.GuiBrowseAsync("");
-
-        Assert.NotNull(result);
-        Assert.Equal(3, result!.Count);
-        Assert.Equal(1494723142483ul, result[0]);
-        Assert.Equal(1494703460437ul, result[1]);
-        Assert.Equal(1494703479525ul, result[2]);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiSelectedNotesAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiSelectedNotesAsync();
-
-        Handler.WasSent("{\"action\":\"guiSelectedNotes\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -56,12 +42,7 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
 }");
 
         var result = await Target.GuiSelectedNotesAsync();
-
-        Assert.NotNull(result);
-        Assert.Equal(3, result!.Count);
-        Assert.Equal(1494723142483ul, result[0]);
-        Assert.Equal(1494703460437ul, result[1]);
-        Assert.Equal(1494703479525ul, result[2]);
+        await VerifyResponse(result);
     }
 
     [Fact(Skip = "Method does not exist yet")]
@@ -81,16 +62,8 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
     public async Task GuiEditNoteAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiEditNoteAsync(1649198355435ul);
-
-        Handler.WasSent(@"{
-    ""action"": ""guiEditNote"",
-    ""version"": 6,
-    ""params"": {
-        ""note"": 1649198355435
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -106,10 +79,8 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
     public async Task GuiCurrentCardAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiCurrentCardAsync();
-
-        Handler.WasSent("{\"action\":\"guiCurrentCard\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -135,167 +106,103 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
 }");
 
         var result = await Target.GuiCurrentCardAsync();
-
-        Assert.NotNull(result);
-        Assert.Equal("back content", result!.Answer);
-        Assert.Equal("front content", result.Question);
-        Assert.Equal("Default", result.DeckName);
-        Assert.Equal("Basic", result.ModelName);
-        Assert.Equal(0, result.FieldOrder);
-        Assert.Equal(2, result.Fields.Count);
-        Assert.Contains("Front", result.Fields);
-        Assert.Equal("front content", result.Fields["Front"].Value);
-        Assert.Equal(0, result.Fields["Front"].Order);
-        Assert.Contains("Back", result.Fields);
-        Assert.Equal("back content", result.Fields["Back"].Value);
-        Assert.Equal(1, result.Fields["Back"].Order);
-        Assert.Equal("Forward", result.Template);
-        Assert.Equal(1498938915662ul, result.CardId);
-        Assert.Equal(3, result.Buttons.Count);
-        Assert.Equal(1, result.Buttons[0]);
-        Assert.Equal(2, result.Buttons[1]);
-        Assert.Equal(3, result.Buttons[2]);
-        Assert.Equal(3, result.NextReviews.Count);
-        Assert.Equal("<1m", result.NextReviews[0]);
-        Assert.Equal("<10m", result.NextReviews[1]);
-        Assert.Equal("4d", result.NextReviews[2]);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiCurrentCardAsync_ShouldParseResponse_WhenNull()
     {
         Handler.Returns("{\"result\":null,\"error\":null}");
-
         var result = await Target.GuiCurrentCardAsync();
-
-        Assert.Null(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiStartCardTimerAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiStartCardTimerAsync();
-
-        Handler.WasSent("{\"action\":\"guiStartCardTimer\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
     public async Task GuiStartCardTimerAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-
         var result = await Target.GuiStartCardTimerAsync();
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiShowQuestionAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiShowQuestionAsync();
-
-        Handler.WasSent("{\"action\":\"guiShowQuestion\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
     public async Task GuiShowQuestionAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-
         var result = await Target.GuiShowQuestionAsync();
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiShowAnswerAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiShowAnswerAsync();
-
-        Handler.WasSent("{\"action\":\"guiShowAnswer\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
     public async Task GuiShowAnswerAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-
         var result = await Target.GuiShowAnswerAsync();
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiAnswerCardAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiAnswerCardAsync(1);
-
-        Handler.WasSent(@"{
-    ""action"": ""guiAnswerCard"",
-    ""version"": 6,
-    ""params"": {
-        ""ease"": 1
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
     public async Task GuiAnswerCardAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-
         var result = await Target.GuiAnswerCardAsync(0);
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiDeckOverviewAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiDeckOverviewAsync("Default");
-
-        Handler.WasSent(@"{
-    ""action"": ""guiDeckOverview"",
-    ""version"": 6,
-    ""params"": {
-        ""name"": ""Default""
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
     public async Task GuiDeckOverviewAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-
         var result = await Target.GuiDeckOverviewAsync(new DeckNameParams());
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiDeckBrowserAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiDeckBrowserAsync();
-
-        Handler.WasSent("{\"action\":\"guiDeckBrowser\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -311,37 +218,24 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
     public async Task GuiDeckReviewAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiDeckReviewAsync("Default");
-
-        Handler.WasSent(@"{
-    ""action"": ""guiDeckReview"",
-    ""version"": 6,
-    ""params"": {
-        ""name"": ""Default""
-    }
-}");
+        await VerifyRequest();
     }
 
     [Fact]
     public async Task GuiDeckReviewAsync_ShouldParseResponse()
     {
         Handler.Returns("{\"result\":true,\"error\":null}");
-
         var result = await Target.GuiDeckReviewAsync(new DeckNameParams());
-
-        Assert.NotNull(result);
-        Assert.True(result);
+        await VerifyResponse(result);
     }
 
     [Fact]
     public async Task GuiExitAnkiAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiExitAnkiAsync();
-
-        Handler.WasSent("{\"action\":\"guiExitAnki\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
@@ -357,10 +251,8 @@ public class AnkiGuiTests : AnkiClientTestsBase<IAnkiGui>
     public async Task GuiCheckDatabaseAsync_ShouldParseRequest()
     {
         Handler.Returns("{}");
-
         await Target.GuiCheckDatabaseAsync();
-
-        Handler.WasSent("{\"action\":\"guiCheckDatabase\",\"version\":6}");
+        await VerifyRequest();
     }
 
     [Fact]
