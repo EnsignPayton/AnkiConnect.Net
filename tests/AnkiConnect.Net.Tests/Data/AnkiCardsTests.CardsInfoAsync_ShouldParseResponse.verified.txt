@@ -1,0 +1,50 @@
+﻿[
+  {
+    Answer: back content,
+    Question: front content,
+    DeckName: Default,
+    ModelName: Basic,
+    FieldOrder: 1,
+    Fields: {
+      Back: {
+        Value: back content,
+        Order: 1
+      },
+      Front: {
+        Value: front content
+      }
+    },
+    Css: p {font-family:Arial;},
+    CardId: 1498938915662,
+    Interval: 16,
+    Note: 1502298033753,
+    Ord: 1,
+    Due: 1,
+    Reps: 1,
+    Left: 6,
+    Mod: 1629454092
+  },
+  {
+    Answer: back content,
+    Question: front content,
+    DeckName: Default,
+    ModelName: Basic,
+    Fields: {
+      Back: {
+        Value: back content,
+        Order: 1
+      },
+      Front: {
+        Value: front content
+      }
+    },
+    Css: p {font-family:Arial;},
+    CardId: 1502098034048,
+    Interval: 23,
+    Note: 1502298033753,
+    Ord: 1,
+    Due: 1,
+    Reps: 1,
+    Left: 6
+  }
+]

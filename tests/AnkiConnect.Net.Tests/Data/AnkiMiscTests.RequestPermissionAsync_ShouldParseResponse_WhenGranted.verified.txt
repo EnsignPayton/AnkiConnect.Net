@@ -1,0 +1,5 @@
+﻿{
+  Permission: granted,
+  RequireApiKey: false,
+  Version: 6
+}

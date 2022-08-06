@@ -1,0 +1,19 @@
+﻿[
+  {
+    NoteId: 1502298033753,
+    ModelName: Basic,
+    Tags: [
+      tag,
+      another_tag
+    ],
+    Fields: {
+      Back: {
+        Value: back content,
+        Order: 1
+      },
+      Front: {
+        Value: front content
+      }
+    }
+  }
+]

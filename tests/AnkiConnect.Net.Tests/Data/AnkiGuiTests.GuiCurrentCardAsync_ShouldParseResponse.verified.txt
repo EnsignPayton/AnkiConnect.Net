@@ -1,0 +1,27 @@
+﻿{
+  Answer: back content,
+  Question: front content,
+  DeckName: Default,
+  ModelName: Basic,
+  Fields: {
+    Back: {
+      Value: back content,
+      Order: 1
+    },
+    Front: {
+      Value: front content
+    }
+  },
+  Template: Forward,
+  CardId: 1498938915662,
+  Buttons: [
+    1,
+    2,
+    3
+  ],
+  NextReviews: [
+    <1m,
+    <10m,
+    4d
+  ]
+}

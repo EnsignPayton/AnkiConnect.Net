@@ -1,0 +1,4 @@
+﻿[
+  Basic,
+  Basic (and reversed card)
+]

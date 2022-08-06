@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"updateModelStyling","version":6,"params":{"model":{"name":"Custom","css":"p { color: blue; }"}}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

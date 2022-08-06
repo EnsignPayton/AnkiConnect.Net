@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"modelFieldNames","version":6,"params":{"modelName":"Basic"}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

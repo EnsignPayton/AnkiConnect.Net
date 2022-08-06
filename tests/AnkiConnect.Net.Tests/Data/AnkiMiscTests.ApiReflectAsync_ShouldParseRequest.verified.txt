@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"apiReflect","version":6,"params":{"scopes":["actions","invalidType"],"actions":["apiReflect","invalidMethod"]}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"suspended","version":6,"params":{"card":1483959293217}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

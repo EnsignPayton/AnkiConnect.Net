@@ -1,0 +1,9 @@
+﻿[
+  {
+    RequestUri: 'http://localhost:8765',
+    RequestMethod: POST,
+    RequestContent: {"action":"getDeckStats","version":6,"params":{"decks":["Japanese::JLPT N5","Easy Spanish"]}},
+    ResponseStatus: OK,
+    ResponseContent: {}
+  }
+]

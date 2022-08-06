@@ -1,0 +1,16 @@
+﻿{
+  1651445861960: {
+    DeckId: 1651445861960,
+    Name: Easy Spanish,
+    NewCount: 26,
+    LearnCount: 10,
+    ReviewCount: 5,
+    TotalInDeck: 852
+  },
+  1651445861967: {
+    DeckId: 1651445861967,
+    Name: Japanese::JLPT N5,
+    NewCount: 20,
+    TotalInDeck: 1506
+  }
+}
