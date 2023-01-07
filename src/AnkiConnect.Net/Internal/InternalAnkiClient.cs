@@ -5,7 +5,7 @@ namespace AnkiConnect.Net.Internal;
 
 internal class InternalAnkiClient
 {
-    private const string DefaultUrl = "http://localhost:8765";
+    private const string DefaultUrl = "http://127.0.0.1:8765";
 
     private readonly HttpClient _httpClient;
 
