@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://localhost:8765',
+    RequestUri: 'http://127.0.0.1:8765',
     RequestMethod: POST,
     RequestContent: {"action":"cloneDeckConfigId","version":6,"params":{"name":"Copy of Default","cloneFrom":1}},
     ResponseStatus: OK,

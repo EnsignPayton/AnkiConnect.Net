@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://localhost:8765',
+    RequestUri: 'http://127.0.0.1:8765',
     RequestMethod: POST,
     RequestContent: {"action":"addTags","version":6,"params":{"notes":[1483959289817,1483959291695],"tags":"european-languages"}},
     ResponseStatus: OK,

@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://localhost:8765',
+    RequestUri: 'http://127.0.0.1:8765',
     RequestMethod: POST,
     RequestContent: {"action":"replaceTagsInAllNotes","version":6,"params":{"tag_to_replace":"european-languages","replace_with_tag":"french-languages"}},
     ResponseStatus: OK,

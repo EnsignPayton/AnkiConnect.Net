@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://localhost:8765',
+    RequestUri: 'http://127.0.0.1:8765',
     RequestMethod: POST,
     RequestContent: {"action":"unsuspend","version":6,"params":{"cards":[1483959291685,1483959293217]}},
     ResponseStatus: OK,

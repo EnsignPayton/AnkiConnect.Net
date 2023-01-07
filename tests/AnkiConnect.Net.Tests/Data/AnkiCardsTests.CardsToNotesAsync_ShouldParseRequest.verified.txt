@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://localhost:8765',
+    RequestUri: 'http://127.0.0.1:8765',
     RequestMethod: POST,
     RequestContent: {"action":"cardsToNotes","version":6,"params":{"cards":[1502098034045,1502098034048,1502298033753]}},
     ResponseStatus: OK,
