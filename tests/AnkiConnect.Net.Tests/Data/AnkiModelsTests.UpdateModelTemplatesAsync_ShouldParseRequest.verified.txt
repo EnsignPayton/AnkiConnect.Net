@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://127.0.0.1:8765',
+    RequestUri: http://127.0.0.1:8765,
     RequestMethod: POST,
     RequestContent: {"action":"updateModelTemplates","version":6,"params":{"model":{"name":"Custom","templates":{"Card 1":{"Front":"{{Question}}?","Back":"{{Answer}}!"}}}}},
     ResponseStatus: OK,

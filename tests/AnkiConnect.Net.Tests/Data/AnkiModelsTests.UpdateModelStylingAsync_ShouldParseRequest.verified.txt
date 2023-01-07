@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://127.0.0.1:8765',
+    RequestUri: http://127.0.0.1:8765,
     RequestMethod: POST,
     RequestContent: {"action":"updateModelStyling","version":6,"params":{"model":{"name":"Custom","css":"p { color: blue; }"}}},
     ResponseStatus: OK,

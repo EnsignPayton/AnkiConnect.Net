@@ -1,6 +1,6 @@
 ﻿[
   {
-    RequestUri: 'http://127.0.0.1:8765',
+    RequestUri: http://127.0.0.1:8765,
     RequestMethod: POST,
     RequestContent: {"action":"exportPackage","version":6,"params":{"deck":"Default","path":"/data/Deck.apkg","includeSched":true}},
     ResponseStatus: OK,
