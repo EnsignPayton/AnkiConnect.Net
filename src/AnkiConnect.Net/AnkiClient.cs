@@ -8,6 +8,10 @@ public class AnkiClient : IAnkiClient
 {
     private readonly InternalAnkiClient _client;
 
+    public AnkiClient() : this(new HttpClient())
+    {
+    }
+
     public AnkiClient(HttpClient httpClient)
     {
         _client = new InternalAnkiClient(httpClient);
