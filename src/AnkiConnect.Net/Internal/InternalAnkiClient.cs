@@ -9,6 +9,11 @@ internal class InternalAnkiClient
 
     private readonly HttpClient _httpClient;
 
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        Converters = { new StoreMediaFileParamsConverter() }
+    };
+
     public InternalAnkiClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -88,13 +93,7 @@ internal class InternalAnkiClient
 
     private async Task<string> InvokeAsync<T>(T request)
     {
-        var json = JsonSerializer.Serialize(request, new JsonSerializerOptions
-        {
-            Converters =
-            {
-                new StoreMediaFileParamsConverter()
-            }
-        });
+        var json = JsonSerializer.Serialize(request, _jsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var message = await _httpClient.PostAsync(DefaultUrl, content);
         message.EnsureSuccessStatusCode();
